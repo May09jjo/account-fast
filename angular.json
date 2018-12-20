@@ -27,7 +27,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles/styles.scss"
             ],
             "scripts": []
           },
@@ -135,5 +135,10 @@
       }
     }
   },
-  "defaultProject": "account-fast"
+  "defaultProject": "account-fast",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
