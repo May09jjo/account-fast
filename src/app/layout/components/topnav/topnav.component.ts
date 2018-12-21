@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
     selector: 'app-topnav',
     templateUrl: './topnav.component.html',
-    styleUrls: ['./topnav.component.sass']
+    styleUrls: ['./topnav.component.scss']
 })
 export class TopnavComponent implements OnInit {
     public pushRightClass: string;
