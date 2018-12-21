@@ -8,14 +8,18 @@ import {
     MatSidenavModule,
     MatToolbarModule
 } from '@angular/material';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {DemoMaterialModule} from '../material-module';
+
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
     /* for development
@@ -36,6 +40,9 @@ export const createTranslateLoader = (http: HttpClient) => {
         LayoutModule,
         OverlayModule,
         HttpClientModule,
+        DemoMaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

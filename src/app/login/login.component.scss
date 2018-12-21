@@ -50,3 +50,46 @@
 .w-100 {
     width: 100%;
 }
+
+.w-50 {
+  width: 50%;
+}
+
+.create-account{
+
+  padding: 20px 5px 10px 5px;
+
+   a{
+    text-decoration: none;
+  }
+}
+
+.sign-in-dialog {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+
+   .content {
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .app-name {
+            margin-top: 0px;
+            padding-bottom: 10px;
+            font-size: 32px;
+        }
+        .login-form {
+            padding: 40px;
+            background: #fff;
+            width: 500px;
+            box-shadow: 0 0 10px #ddd;
+            input:-webkit-autofill {
+                -webkit-box-shadow: 0 0 0 30px white inset;
+            }
+        }
+    }
+}

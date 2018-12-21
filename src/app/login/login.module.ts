@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule, MatCheckboxModule, MatInputModule } from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginRoutingModule } from './login-routing.module';
-import { LoginComponent } from './login.component';
-
+import { LoginComponent , SignInDialog} from './login.component';
+import {MatDialogModule} from '@angular/material/dialog';
 @NgModule({
     imports: [
         CommonModule,
@@ -14,8 +15,12 @@ import { LoginComponent } from './login.component';
         MatCheckboxModule,
         MatButtonModule,
         MatFormFieldModule,
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
         FlexLayoutModule.withConfig({addFlexToParent: false})
     ],
-    declarations: [LoginComponent]
+    declarations: [LoginComponent, SignInDialog],
+    entryComponents: [LoginComponent, SignInDialog]
 })
 export class LoginModule {}
