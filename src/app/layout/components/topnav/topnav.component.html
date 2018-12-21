@@ -19,11 +19,11 @@
       <button mat-menu-item (click)="changeLang('en')">
           <span>{{ 'English' | translate }}</span>
       </button>
+      <button mat-menu-item (click)="changeLang('es')">
+          <span>{{ 'Spanish' | translate }}</span>
+      </button>
       <button mat-menu-item (click)="changeLang('fr')">
           <span>{{ 'French' | translate }}</span>
-      </button>
-      <button mat-menu-item (click)="changeLang('ur')">
-          <span>{{ 'Urdu' | translate }}s</span>
       </button>
   </mat-menu>
   <button class="hidden-sm" mat-icon-button [matMenuTriggerFor]="profile">
