@@ -20,6 +20,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {DemoMaterialModule} from '../material-module';
 
+/* Firebase */
+import {AngularFireModule} from 'angularfire2';
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {environment } from '../environments/environment';
+import {AngularFireAuth } from '@angular/fire/auth';
+
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
     /* for development
@@ -49,9 +55,11 @@ export const createTranslateLoader = (http: HttpClient) => {
                 useFactory: createTranslateLoader,
                 deps: [HttpClient]
             }
-        })
+        }),
+        AngularFireDatabaseModule,
+        AngularFireModule.initializeApp(environment.firebase)
     ],
-    providers: [],
+    providers: [AngularFireAuth],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

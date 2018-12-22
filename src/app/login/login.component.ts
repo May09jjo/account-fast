@@ -1,7 +1,11 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { AuthFireService } from '.././auth-fire.service';
 
+/* Firebase Login & Sign-In*/
+import { AngularFireAuth} from '@angular/fire/auth';
+import { auth } from 'firebase/app';
 
 export interface DialogData {
   animal: string;
@@ -18,13 +22,22 @@ export class LoginComponent implements OnInit {
   animal: string;
   name: string;
 
-    constructor(private router: Router , public dialog: MatDialog) {}
+    constructor(private router: Router ,
+      public dialog: MatDialog,
+      public afAuth: AngularFireAuth,
+      private authfire: AuthFireService) {}
+
+ public email: string = " ";
+ public password: string = " ";
 
     ngOnInit() {}
 
-    onLogin() {
-        localStorage.setItem('isLoggedin', 'true');
-        this.router.navigate(['/dashboard']);
+    onLoginEmailPass() {
+        this.authfire.logininEmailUser(this.email, this.password )
+        .then((res) => {
+          localStorage.setItem('isLoggedin', 'true');
+          this.router.navigate(['/dashboard']);
+        }).catch(err => console.log('err', err.message));
     }
 
     openDialog(): void {
@@ -37,6 +50,8 @@ export class LoginComponent implements OnInit {
         this.animal = result;
       });
     }
+
+
 }
 
 

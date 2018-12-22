@@ -8,14 +8,14 @@
           <div fxFlex  fxlayout="row" fxlayout.lt-md="column">
               <div fxFlexFill>
                   <mat-form-field class="w-100">
-                      <input matInput placeholder="Email">
+                      <input matInput placeholder="Email" name="email" [(ngModel)]="email" >
                   </mat-form-field>
               </div>
           </div>
           <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
               <div fxFlexFill>
                   <mat-form-field class="w-100">
-                      <input matInput type="password" placeholder="Password">
+                      <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="password" >
                   </mat-form-field>
               </div>
           </div>
@@ -29,7 +29,7 @@
           </div>
           <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
               <div fxFlexFill fxLayoutAlign="center start">
-                  <button mat-raised-button color="primary" class="w-50" (click)="onLogin()">Login</button>
+                  <button mat-raised-button color="primary" class="w-50" (click)="onLoginEmailPass()">Login</button>
               </div>
           </div>
           <div fxFlex class= "create-account">
