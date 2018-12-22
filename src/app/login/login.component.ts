@@ -6,10 +6,11 @@ import { AuthFireService } from '.././auth-fire.service';
 /* Firebase Login & Sign-In*/
 import { AngularFireAuth} from '@angular/fire/auth';
 import { auth } from 'firebase/app';
+import { EmailValidator } from '@angular/forms';
 
 export interface DialogData {
-  animal: string;
-  name: string;
+  email: string;
+  password: string;
 }
 @Component({
     selector: 'app-login',
@@ -19,16 +20,16 @@ export interface DialogData {
 
 export class LoginComponent implements OnInit {
 
-  animal: string;
-  name: string;
+  emailadd: string;
+  passwordadd: string;
 
     constructor(private router: Router ,
       public dialog: MatDialog,
       public afAuth: AngularFireAuth,
       private authfire: AuthFireService) {}
 
- public email: string = " ";
- public password: string = " ";
+ public email = '';
+ public password = '';
 
     ngOnInit() {}
 
@@ -37,20 +38,31 @@ export class LoginComponent implements OnInit {
         .then((res) => {
           localStorage.setItem('isLoggedin', 'true');
           this.router.navigate(['/dashboard']);
+          console.log('res', res);
+          console.log('mensaje');
         }).catch(err => console.log('err', err.message));
     }
 
     openDialog(): void {
       const dialogRef = this.dialog.open(SignInDialog, {
         width: '450px',
-        data: {name: this.name, animal: this.animal}
+        data: {emailadd: this.emailadd, passwordadd: this.passwordadd}
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.animal = result;
+        this.emailadd = result.email;
+        this.passwordadd = result.password;
+        console.log('EMAIL', this.emailadd + 'PASS', this.passwordadd);
+        this.onAddUser(this.emailadd, this.passwordadd);
       });
     }
 
+    onAddUser(emailAdd: string, passwordAdd: string) {
+      this.authfire.registerUser(emailAdd, passwordAdd).then((res) => {
+          localStorage.setItem('isLoggedin', 'true');
+          this.router.navigate(['/dashboard']);
+      }).catch(err => console.log('err', err.message));
+    }
 
 }
 
@@ -66,12 +78,20 @@ export class LoginComponent implements OnInit {
 // tslint:disable-next-line:component-class-suffix
 export class SignInDialog {
 
+  public email = '';
+  public password = '';
+
   constructor(
     public dialogRef: MatDialogRef<SignInDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private router: Router,
+    private authfire: AuthFireService) {}
 
   onNoClick(): void {
     this.dialogRef.close();
+    console.log('No gracias');
   }
+
+
 
 }
