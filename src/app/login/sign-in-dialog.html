@@ -3,31 +3,51 @@
 <div class="content">
   <form class="login-form" fxFlex  >
     <div class="text-center">
-        <h2 class="app-name">Sing-In</h2>
+        <h2 class="app-name">Crea tu cuenta en AccountFast</h2>
       <!--   <h1 mat-dialog-title>Hi {{data.name}}</h1> -->
     </div>
 
     <div mat-dialog-content >
         <div fxFlex  fxlayout="row" fxlayout.lt-md="column">
-      <div fxFlexFill>
-          <mat-form-field class="w-100">
-              <input matInput placeholder="name" name="name">
+      <div fxFlexFill class="espacios">
+
+        <mat-form-field class="w-50"  appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput  name="name">
               <!-- <input matInput [(ngModel)]="data.animal"> -->
           </mat-form-field>
+
+          <mat-form-field class="w-50" appearance="outline">
+              <mat-label>Apellido</mat-label>
+              <input matInput name="lastname">
+              <!-- <input matInput [(ngModel)]="data.animal"> -->
+          </mat-form-field>
+
       </div>
-      </div>
+     </div>
+
         <div fxFlex  fxlayout="row" fxlayout.lt-md="column">
         <div fxFlexFill>
-            <mat-form-field class="w-100">
-                <input matInput placeholder="Email" name="email" [(ngModel)]="data.email">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Correo</mat-label>
+                <input matInput  name="email" [(ngModel)]="data.email">
             </mat-form-field>
         </div>
         </div>
+
         <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
-        <div fxFlexFill>
-            <mat-form-field class="w-100">
-                <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="data.password">
+        <div fxFlexFill class="espacios">
+
+            <mat-form-field class="w-50 child" appearance="outline">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password"  name="password" [(ngModel)]="data.password">
             </mat-form-field>
+
+            <mat-form-field class="w-50 child" appearance="outline">
+                <mat-label>Confirmación</mat-label>
+                <input matInput type="password"  name="password" [(ngModel)]="data.password">
+            </mat-form-field>
+
         </div>
         </div>
     </div>

@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { Router } from '@angular/router';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { AuthFireService } from '.././auth-fire.service';
 
 /* Firebase Login & Sign-In*/
 import { AngularFireAuth} from '@angular/fire/auth';
 import { auth } from 'firebase/app';
-import { EmailValidator } from '@angular/forms';
+import { EmailValidator, FormControl , Validator, Validators} from '@angular/forms';
 
 export interface DialogData {
   email: string;
@@ -20,16 +20,26 @@ export interface DialogData {
 
 export class LoginComponent implements OnInit {
 
-  emailadd: string;
-  passwordadd: string;
-
     constructor(private router: Router ,
       public dialog: MatDialog,
       public afAuth: AngularFireAuth,
-      private authfire: AuthFireService) {}
+      private authfire: AuthFireService,
+      public snackBar: MatSnackBar) {}
 
+  emailadd: string;
+  passwordadd: string;
+
+  /* validar email & password*/
+  emailv = new FormControl('', [Validators.required, Validators.email]);
+  hide = true;
+
+ // tslint:disable-next-line:member-ordering
  public email = '';
  public password = '';
+  getErrorMessage() {
+    return this.emailv.hasError('required') ? 'Debe introducir un correo' :
+    this.emailv.hasError('email') ? 'Correo no valido' : '';
+  }
 
     ngOnInit() {}
 
@@ -40,7 +50,33 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/dashboard']);
           console.log('res', res);
           console.log('mensaje');
-        }).catch(err => console.log('err', err.message));
+        }).catch(err => {
+
+          switch (err.code) {
+            case 'auth/invalid-email':
+                console.log('correo invalido');
+                this.openSnackBar('Correo Invalido', 'Error');
+            break;
+            case 'auth/user-not-found':
+                console.log('USUARIO NO VALIDO');
+                this.openSnackBar('¡Usuario no encontrado!', 'Error');
+              break;
+            case 'auth/wrong-password':
+                console.log('contraseña invalida');
+                this.openSnackBar('¡Contraseña invalida!', 'Error');
+            break;
+            default:
+                console.log('err', err.code);
+                this.openSnackBar(err.message, 'Error');
+            break;
+          }
+        });
+    }
+
+  public  openSnackBar(message: string, action: string) {
+      this.snackBar.open(message, action, {
+        duration: 3000,
+      });
     }
 
     openDialog(): void {
@@ -63,7 +99,6 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/dashboard']);
       }).catch(err => console.log('err', err.message));
     }
-
 }
 
 

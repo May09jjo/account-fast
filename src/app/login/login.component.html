@@ -7,15 +7,19 @@
           </div>
           <div fxFlex  fxlayout="row" fxlayout.lt-md="column">
               <div fxFlexFill>
-                  <mat-form-field class="w-100">
-                      <input matInput placeholder="Email" name="email" [(ngModel)]="email" >
-                  </mat-form-field>
+                  <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>Email</mat-label>
+                      <input matInput [formControl]="emailv" placeholder="Enter your email" name="email" [(ngModel)]="email" required>
+                      <mat-error *ngIf=" emailv.invalid ">{{getErrorMessage()}}</mat-error>
+                    </mat-form-field>
               </div>
           </div>
           <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
               <div fxFlexFill>
-                  <mat-form-field class="w-100">
-                      <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="password" >
+                  <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>Password</mat-label>
+                      <input matInput [type]="hide ? 'password' : 'text'" placeholder="Enter your password" name="password" [(ngModel)]="password" required>
+                      <mat-icon matSuffix (click)="hide = !hide" >{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </mat-form-field>
               </div>
           </div>
@@ -29,15 +33,14 @@
           </div>
           <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
               <div fxFlexFill fxLayoutAlign="center start">
-                  <button mat-raised-button color="primary" class="w-50" (click)="onLoginEmailPass()">Login</button>
+                  <button mat-raised-button color="primary" class="w-50" (click)="onLoginEmailPass()" [disabled]="emailv.invalid" >Login</button>
               </div>
           </div>
           <div fxFlex class= "create-account">
             <a  mat-button (click)="openDialog()">CREATE ACCOUNT</a>
           </div>
-          <li *ngIf="animal">
-            You chose: <i>{{animal}}</i>
-          </li>
+          <!-- alerta -->
+
       </form>
   </div>
 </div>

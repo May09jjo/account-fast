@@ -6,7 +6,8 @@ import {
     MatIconModule,
     MatListModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconRegistry
 } from '@angular/material';
 
 import { BrowserModule } from '@angular/platform-browser';
