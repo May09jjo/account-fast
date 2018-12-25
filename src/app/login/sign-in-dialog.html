@@ -11,13 +11,13 @@
         <div fxFlex  fxlayout="row" fxlayout.lt-md="column">
       <div fxFlexFill class="espacios">
 
-        <mat-form-field class="w-50"  appearance="outline">
+        <mat-form-field class="w-40 child-primary"  appearance="outline">
               <mat-label>Nombre</mat-label>
               <input matInput  name="name">
               <!-- <input matInput [(ngModel)]="data.animal"> -->
           </mat-form-field>
 
-          <mat-form-field class="w-50" appearance="outline">
+          <mat-form-field class="w-40 child" appearance="outline">
               <mat-label>Apellido</mat-label>
               <input matInput name="lastname">
               <!-- <input matInput [(ngModel)]="data.animal"> -->
@@ -38,22 +38,21 @@
         <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
         <div fxFlexFill class="espacios">
 
-            <mat-form-field class="w-50 child" appearance="outline">
+            <mat-form-field class="w-40 child-primary" appearance="outline">
                 <mat-label>Contraseña</mat-label>
                 <input matInput type="password"  name="password" [(ngModel)]="data.password">
             </mat-form-field>
 
-            <mat-form-field class="w-50 child" appearance="outline">
+            <mat-form-field class="w-40 child" appearance="outline">
                 <mat-label>Confirmación</mat-label>
-                <input matInput type="password"  name="password" [(ngModel)]="data.password">
+                <input matInput type="password"  name="confirm" [(ngModel)]="data.confirm">
             </mat-form-field>
-
         </div>
         </div>
     </div>
-    <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">No Thanks</button>
-      <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    <div mat-dialog-actions fxLayoutAlign="center start" fxLayoutGap="20px" >
+      <button mat-raised-button color="warn" (click)="onNoClick()">No Thanks</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
     </div>
 
   </form>

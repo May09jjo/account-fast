@@ -11,6 +11,7 @@ import { EmailValidator, FormControl , Validator, Validators} from '@angular/for
 export interface DialogData {
   email: string;
   password: string;
+  confirm: string;
 }
 @Component({
     selector: 'app-login',
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
 
   emailadd: string;
   passwordadd: string;
+  confirm: string;
 
   /* validar email & password*/
   emailv = new FormControl('', [Validators.required, Validators.email]);
@@ -36,6 +38,7 @@ export class LoginComponent implements OnInit {
  // tslint:disable-next-line:member-ordering
  public email = '';
  public password = '';
+
   getErrorMessage() {
     return this.emailv.hasError('required') ? 'Debe introducir un correo' :
     this.emailv.hasError('email') ? 'Correo no valido' : '';
@@ -81,14 +84,15 @@ export class LoginComponent implements OnInit {
 
     openDialog(): void {
       const dialogRef = this.dialog.open(SignInDialog, {
-        width: '450px',
-        data: {emailadd: this.emailadd, passwordadd: this.passwordadd}
+        width: '500px',
+        data: {emailadd: this.emailadd, passwordadd: this.passwordadd, confirm: this.confirm }
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
         this.emailadd = result.email;
         this.passwordadd = result.password;
-        console.log('EMAIL', this.emailadd + 'PASS', this.passwordadd);
+        this.confirm = result.confirm;
+        console.log('EMAIL', this.emailadd + 'PASS', this.passwordadd + 'CONFIRMA' , this.confirm );
         this.onAddUser(this.emailadd, this.passwordadd);
       });
     }

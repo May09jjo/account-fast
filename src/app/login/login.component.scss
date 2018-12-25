@@ -20,7 +20,7 @@
             width: 500px;
             box-shadow: 0 0 10px #ddd;
             input:-webkit-autofill {
-                -webkit-box-shadow: 0 0 0 30px white inset;
+                --webkit-box-shadow: 0 0 0 30px white inset;
             }
         }
     }
@@ -53,6 +53,14 @@
 
 .w-50 {
   width: 50%;
+}
+
+.w-40 {
+  width: 47%;
+}
+
+.child-primary{
+  margin-right: 23px;
 }
 
 .create-account{
@@ -90,7 +98,7 @@
             box-shadow: 0 0 10px #ddd;
             border-radius: 10px;
             input:-webkit-autofill {
-                -webkit-box-shadow: 0 0 0 30px white inset;
+                --webkit-box-shadow: 0 0 0 30px white inset;
             }
         }
 
