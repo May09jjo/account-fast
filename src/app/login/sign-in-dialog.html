@@ -1,7 +1,7 @@
 
 <div clas="sign-in-dialog">
 <div class="content">
-  <form class="login-form" fxFlex  >
+  <form class="signin-form" fxFlex [formGroup]= "registerForm" (ngSubmit)="onSubmit()" >
     <div class="text-center">
         <h2 class="app-name">Crea tu cuenta en AccountFast</h2>
       <!--   <h1 mat-dialog-title>Hi {{data.name}}</h1> -->
@@ -13,46 +13,73 @@
 
         <mat-form-field class="w-40 child-primary"  appearance="outline">
               <mat-label>Nombre</mat-label>
-              <input matInput  name="name">
-              <!-- <input matInput [(ngModel)]="data.animal"> -->
-          </mat-form-field>
+              <input matInput  name="name" formControlName="firstName" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+
+              <mat-error *ngIf="submitted && f.firstName.errors">
+                  <mat-error *ngIf= "f.firstName.errors.required">First Name is required</mat-error>
+              </mat-error>
+           </mat-form-field>
+
 
           <mat-form-field class="w-40 child" appearance="outline">
               <mat-label>Apellido</mat-label>
-              <input matInput name="lastname">
-              <!-- <input matInput [(ngModel)]="data.animal"> -->
-          </mat-form-field>
+              <input matInput name="lastname"  formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+
+              <mat-error *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                  <mat-error *ngIf="f.lastName.errors.required">Last Name is required</mat-error>
+                </mat-error>
+           </mat-form-field>
+
 
       </div>
      </div>
 
         <div fxFlex  fxlayout="row" fxlayout.lt-md="column">
-        <div fxFlexFill>
+        <div fxFlexFill  class="espacios">
             <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Correo</mat-label>
-                <input matInput  name="email" [(ngModel)]="data.email">
-            </mat-form-field>
+                <input matInput  name="email" [(ngModel)]="data.email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+
+                <mat-error *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <mat-error *ngIf="f.email.errors.email">Email must be a valid email address</mat-error>
+                    <mat-error *ngIf="f.email.errors.required">Email is required</mat-error>
+                </mat-error>
+              </mat-form-field>
+
         </div>
         </div>
 
         <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
-        <div fxFlexFill class="espacios">
+        <div fxFlexFill class="espacios"  class="espacios">
 
             <mat-form-field class="w-40 child-primary" appearance="outline">
                 <mat-label>Contraseña</mat-label>
-                <input matInput type="password"  name="password" [(ngModel)]="data.password">
-            </mat-form-field>
+                <input matInput type="password"  name="password" [(ngModel)]="data.password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" >
+
+                <mat-error *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <mat-error *ngIf="f.password.errors.required">Password is required</mat-error>
+                    <mat-error *ngIf="f.password.errors.minlength">Password must be at least 6 characters</mat-error>
+                  </mat-error >
+             </mat-form-field>
+
 
             <mat-form-field class="w-40 child" appearance="outline">
                 <mat-label>Confirmación</mat-label>
-                <input matInput type="password"  name="confirm" [(ngModel)]="data.confirm">
-            </mat-form-field>
+                <input matInput type="password"  name="confirm" [(ngModel)]="data.confirm" formControlName="confirmPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors }">
+
+                <mat-error *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+                    <mat-error *ngIf="f.confirmPassword.errors.required">Confirm Password is required</mat-error>
+                    <mat-error *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</mat-error>
+                </mat-error >
+              </mat-form-field>
+
+
         </div>
         </div>
     </div>
-    <div mat-dialog-actions fxLayoutAlign="center start" fxLayoutGap="20px" >
+    <div mat-dialog-actions fxLayoutAlign="center start"  fxLayoutGap="15px">
       <button mat-raised-button color="warn" (click)="onNoClick()">No Thanks</button>
-      <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+      <button mat-raised-button color="primary"  cdkFocusInitial>Registrarme</button>
     </div>
 
   </form>

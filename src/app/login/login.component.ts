@@ -6,7 +6,10 @@ import { AuthFireService } from '.././auth-fire.service';
 /* Firebase Login & Sign-In*/
 import { AngularFireAuth} from '@angular/fire/auth';
 import { auth } from 'firebase/app';
-import { EmailValidator, FormControl , Validator, Validators} from '@angular/forms';
+import { FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
+
+import { MustMatch } from './must-match.validator';
+
 
 export interface DialogData {
   email: string;
@@ -93,7 +96,7 @@ export class LoginComponent implements OnInit {
         this.passwordadd = result.password;
         this.confirm = result.confirm;
         console.log('EMAIL', this.emailadd + 'PASS', this.passwordadd + 'CONFIRMA' , this.confirm );
-        this.onAddUser(this.emailadd, this.passwordadd);
+       /*  this.onAddUser(this.emailadd, this.passwordadd); */
       });
     }
 
@@ -114,17 +117,47 @@ export class LoginComponent implements OnInit {
   templateUrl: 'sign-in-dialog.html',
   styleUrls: ['./login.component.scss']
 })
+
+
 // tslint:disable-next-line:component-class-suffix
-export class SignInDialog {
+export class SignInDialog implements OnInit {
 
   public email = '';
   public password = '';
+
+  registerForm: FormGroup;
+  submitted = false;
 
   constructor(
     public dialogRef: MatDialogRef<SignInDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private router: Router,
-    private authfire: AuthFireService) {}
+    private authfire: AuthFireService,
+    private formBuilder: FormBuilder) {}
+
+    ngOnInit() {
+        this.registerForm = this.formBuilder.group({
+          firstName: ['', Validators.required],
+          lastName: ['', Validators.required],
+          email: ['', [Validators.required, Validators.email]],
+          password: ['', [Validators.required, Validators.minLength(6)]],
+          confirmPassword: ['', Validators.required]
+        }, {
+            validator: MustMatch('password', 'confirmPassword')
+        });
+    }
+
+    get f() {return this.registerForm.controls; }
+
+    onSubmit() {
+      this.submitted = true;
+
+      if (this.registerForm.invalid) {
+        return;
+      }
+
+      alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value));
+    }
 
   onNoClick(): void {
     this.dialogRef.close();
