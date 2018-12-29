@@ -36,11 +36,20 @@
                   <button mat-raised-button color="primary" class="w-50" (click)="onLoginEmailPass()" [disabled]="emailv.invalid" >Login</button>
               </div>
           </div>
-          <div fxFlex class= "create-account">
-            <a  mat-button (click)="openDialog()">CREATE ACCOUNT</a>
+
+          <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
+            <div fxFlexFill fxLayoutAlign="center start" fxLayoutGap="10px">
+                <button mat-raised-button color="warn" class="w-50" (click)="onLoginGoogle()">Google</button>
+            </div>
           </div>
-          <!-- alerta -->
+
+        <div fxFlex class= "create-account">
+          <a  mat-button (click)="openDialog()">CREATE ACCOUNT</a>
+        </div>
 
       </form>
+
+
+
   </div>
 </div>

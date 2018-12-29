@@ -101,6 +101,17 @@ export class LoginComponent implements OnInit {
         console.log('The dialog was closed');
       });
     }
+
+    onLoginGoogle(): void {
+      this.authfire.loginGoogleUser()
+      .then((res) => {
+        localStorage.setItem('isLoggedin', 'true');
+        this.router.navigate(['/dashboard']);
+        console.log('res', res);
+      }).catch(err => {
+        console.log('err', err.message);
+       });
+    }
 }
 
 

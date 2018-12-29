@@ -10,7 +10,7 @@ import { promise } from 'protractor';
 })
 export class AuthFireService {
 
-  constructor(private afsAuth: AngularFireAuth) {}
+  constructor(public afsAuth: AngularFireAuth) {}
 
   logininEmailUser(email: string , pass: string) {
     // tslint:disable-next-line:no-shadowed-variable
@@ -30,6 +30,11 @@ export class AuthFireService {
     });
   }
 
+
+  loginGoogleUser() {
+    return  this.afsAuth.auth.signInWithPopup(new auth.GithubAuthProvider());
+  }
+
   isAuth() {
     // tslint:disable-next-line:no-shadowed-variable
     return this.afsAuth.authState.pipe(map(auth => auth));
@@ -38,4 +43,5 @@ export class AuthFireService {
   logoutUser() {
     return this.afsAuth.auth.signOut();
   }
+
 }
