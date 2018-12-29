@@ -8,6 +8,13 @@ import { AngularFireAuth} from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 import { FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
 
+/* Services */
+import { PerfilService } from '.././perfil.service';
+
+/* Interface Class */
+import { Perfil } from '../models/perfil';
+
+
 import { MustMatch } from './must-match.validator';
 
 
@@ -88,23 +95,11 @@ export class LoginComponent implements OnInit {
     openDialog(): void {
       const dialogRef = this.dialog.open(SignInDialog, {
         width: '500px',
-        data: {emailadd: this.emailadd, passwordadd: this.passwordadd, confirm: this.confirm }
+        data: { }
       });
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.emailadd = result.email;
-        this.passwordadd = result.password;
-        this.confirm = result.confirm;
-        console.log('EMAIL', this.emailadd + 'PASS', this.passwordadd + 'CONFIRMA' , this.confirm );
-       /*  this.onAddUser(this.emailadd, this.passwordadd); */
       });
-    }
-
-    onAddUser(emailAdd: string, passwordAdd: string) {
-      this.authfire.registerUser(emailAdd, passwordAdd).then((res) => {
-          localStorage.setItem('isLoggedin', 'true');
-          this.router.navigate(['/dashboard']);
-      }).catch(err => console.log('err', err.message));
     }
 }
 
@@ -128,12 +123,22 @@ export class SignInDialog implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
+  perfil: Perfil = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    urlImg: '',
+    fecha: 0
+  };
+
   constructor(
     public dialogRef: MatDialogRef<SignInDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private router: Router,
     private authfire: AuthFireService,
-    private formBuilder: FormBuilder) {}
+    private formBuilder: FormBuilder,
+    public afAuth: AngularFireAuth,
+    private perfilService: PerfilService) {}
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
@@ -156,7 +161,15 @@ export class SignInDialog implements OnInit {
         return;
       }
 
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value));
+      const fechaNow = Date.now();
+      this.perfil.fecha = fechaNow;
+      this.perfil.firstName = this.f.firstName.value;
+      this.perfil.lastName = this.f.lastName.value;
+      this.perfil.email = this.f.email.value;
+
+       this.onAddUser(this.f.email.value , this.f.password.value);
+       this.perfilService.insertPerfil(this.perfil);
+       this.dialogRef.close();
     }
 
   onNoClick(): void {
@@ -165,5 +178,11 @@ export class SignInDialog implements OnInit {
   }
 
 
+  onAddUser(emailAdd: string, passwordAdd: string) {
+    this.authfire.registerUser(emailAdd, passwordAdd).then((res) => {
+    localStorage.setItem('isLoggedin', 'true');
+    this.router.navigate(['/dashboard']);
+}).catch(err => console.log('err', err.message));
+}
 
 }

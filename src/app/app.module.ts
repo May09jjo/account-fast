@@ -1,3 +1,4 @@
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { LayoutModule } from '@angular/cdk/layout';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { NgModule } from '@angular/core';
@@ -23,9 +24,12 @@ import {DemoMaterialModule} from '../material-module';
 
 /* Firebase */
 import {AngularFireModule} from 'angularfire2';
-import {AngularFireDatabaseModule} from 'angularfire2/database';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {environment } from '../environments/environment';
 import {AngularFireAuth } from '@angular/fire/auth';
+
+import {PerfilService} from './perfil.service';
+
 
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
@@ -44,7 +48,7 @@ export const createTranslateLoader = (http: HttpClient) => {
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
-        LayoutModule,
+          LayoutModule,
         OverlayModule,
         HttpClientModule,
         DemoMaterialModule,
@@ -57,10 +61,10 @@ export const createTranslateLoader = (http: HttpClient) => {
                 deps: [HttpClient]
             }
         }),
-        AngularFireDatabaseModule,
+        AngularFirestoreModule,
         AngularFireModule.initializeApp(environment.firebase)
     ],
-    providers: [AngularFireAuth],
+    providers: [AngularFireAuth, PerfilService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
