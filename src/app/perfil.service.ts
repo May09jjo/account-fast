@@ -18,25 +18,10 @@ export class PerfilService {
   }
 
 
-
-  /* GET */
-
-  getUserId(){
-
-  }
-
-  getClientes(){
-
-  }
-
-  getBitacora(){
-
-  }
-
   /* INSERT */
 
   insertPerfil(perfil: Perfil) {
-    this.perfilColletion.add(perfil);
+    this.perfilColletion.doc(perfil.$key).set(perfil);
     console.log('REGISTRADO');
   }
 

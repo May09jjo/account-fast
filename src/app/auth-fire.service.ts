@@ -32,7 +32,7 @@ export class AuthFireService {
 
 
   loginGoogleUser() {
-    return  this.afsAuth.auth.signInWithPopup(new auth.GithubAuthProvider());
+    return  this.afsAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
   }
 
   isAuth() {

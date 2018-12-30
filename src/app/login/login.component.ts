@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject} from '@angular/core';
+import { Component, OnInit, Inject, NgZone} from '@angular/core';
 import { Router } from '@angular/router';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 import { AuthFireService } from '.././auth-fire.service';
@@ -31,11 +31,21 @@ export interface DialogData {
 
 export class LoginComponent implements OnInit {
 
+  perfil: Perfil = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    urlImg: '',
+    fecha: 0
+  };
+
     constructor(private router: Router ,
       public dialog: MatDialog,
       public afAuth: AngularFireAuth,
       private authfire: AuthFireService,
-      public snackBar: MatSnackBar) {}
+      public snackBar: MatSnackBar,
+      private ngZone: NgZone,
+      private perfilService: PerfilService) {}
 
   emailadd: string;
   passwordadd: string;
@@ -62,7 +72,6 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('isLoggedin', 'true');
           this.router.navigate(['/dashboard']);
           console.log('res', res);
-          console.log('mensaje');
         }).catch(err => {
 
           switch (err.code) {
@@ -105,8 +114,18 @@ export class LoginComponent implements OnInit {
     onLoginGoogle(): void {
       this.authfire.loginGoogleUser()
       .then((res) => {
+        const isNewUSer = false;
+
+        const fechaNow = Date.now();
+        this.perfil.fecha = fechaNow;
+        this.perfil.firstName = res.user.displayName;
+        this.perfil.email = res.user.email;
+        this.perfil.urlImg = res.user.photoURL;
+        this.perfil.$key = res.user.uid;
+        this.perfilService.insertPerfil(this.perfil);
+
         localStorage.setItem('isLoggedin', 'true');
-        this.router.navigate(['/dashboard']);
+        this.ngZone.run(() => this.router.navigate(['/dashboard']).then());
         console.log('res', res);
       }).catch(err => {
         console.log('err', err.message);
@@ -179,7 +198,6 @@ export class SignInDialog implements OnInit {
       this.perfil.email = this.f.email.value;
 
        this.onAddUser(this.f.email.value , this.f.password.value);
-       this.perfilService.insertPerfil(this.perfil);
        this.dialogRef.close();
     }
 
@@ -191,8 +209,12 @@ export class SignInDialog implements OnInit {
 
   onAddUser(emailAdd: string, passwordAdd: string) {
     this.authfire.registerUser(emailAdd, passwordAdd).then((res) => {
+      /* obtener uid del usuario autentificado */
+    this.perfil.$key = this.authfire.afsAuth.auth.currentUser.uid;
+    this.perfilService.insertPerfil(this.perfil);
     localStorage.setItem('isLoggedin', 'true');
     this.router.navigate(['/dashboard']);
+    console.log('UID', this.perfil.$key);
 }).catch(err => console.log('err', err.message));
 }
 
