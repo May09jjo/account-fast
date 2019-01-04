@@ -27,7 +27,8 @@
       </button>
   </mat-menu>
   <button class="hidden-sm" mat-icon-button [matMenuTriggerFor]="profile">
-      <mat-icon>account_circle</mat-icon>
+     <!--  <mat-icon>account_circle</mat-icon> -->
+     <img src="{{urlProfile}}" style=" border-radius: 50%; width: 25px;" >
   </button>
   <mat-menu #profile="matMenu">
       <button mat-menu-item>

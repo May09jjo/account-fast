@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthFireService } from '../../../auth-fire.service';
 
+
 @Component({
     selector: 'app-topnav',
     templateUrl: './topnav.component.html',
@@ -11,6 +12,8 @@ import { AuthFireService } from '../../../auth-fire.service';
 export class TopnavComponent implements OnInit {
     public pushRightClass: string;
 
+    public urlProfile: string;
+
     constructor(public router: Router, private translate: TranslateService,
       private authfire: AuthFireService) {
         this.router.events.subscribe(val => {
@@ -18,6 +21,11 @@ export class TopnavComponent implements OnInit {
                 this.toggleSidebar();
             }
         });
+        if (this.authfire.afsAuth.auth.currentUser.photoURL != null) {
+          this.urlProfile = this.authfire.afsAuth.auth.currentUser.photoURL;
+        } else {
+          this.urlProfile = 'https://via.placeholder.com/400x400';
+        }
     }
 
     ngOnInit() {
