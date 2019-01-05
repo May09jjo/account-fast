@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthFireService } from '../../../auth-fire.service';
@@ -21,7 +21,7 @@ export class TopnavComponent implements OnInit {
                 this.toggleSidebar();
             }
         });
-        if (this.authfire.afsAuth.auth.currentUser.photoURL != null) {
+        if (this.authfire.afsAuth.auth.currentUser != null) {
           this.urlProfile = this.authfire.afsAuth.auth.currentUser.photoURL;
         } else {
           this.urlProfile = 'https://via.placeholder.com/400x400';

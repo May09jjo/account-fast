@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="isHandset ? 'dialog' : 'navigation'" [mode]="(isHandset | async)!.matches ? 'over' : 'side'"
-      [opened]="!(isHandset | async)!.matches">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" mode="side"
+      [(opened)]="opened" >
       <mat-toolbar color="primary">SB Admin Marerial</mat-toolbar>
       <mat-nav-list>
           <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
@@ -31,12 +31,12 @@
   </mat-sidenav>
   <mat-sidenav-content>
       <mat-toolbar color="primary" class="fix-nav">
-          <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="(isHandset | async)!.matches">
+          <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" >
               <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
           </button>
-          <mat-icon class="nav-icon">menu</mat-icon>
+
           <span class="nav-spacer"></span>
-          <!--
+
           <mat-icon class="nav-icon">person</mat-icon>
           <span class="nav-spacer"></span>
           <mat-icon class="nav-icon">notifications</mat-icon>
@@ -44,11 +44,14 @@
           <mat-icon class="nav-icon">fullscreen</mat-icon>
           <mat-icon class="nav-icon">flag</mat-icon>
           <mat-icon class="nav-icon">search</mat-icon>
-          <mat-icon class="nav-icon">account_circle</mat-icon> -->
+          <mat-icon class="nav-icon">account_circle</mat-icon>
           <a class="topnav-icon" [routerLink]="['/login']">
               <mat-icon>exit_to_app</mat-icon>
           </a>
 
       </mat-toolbar>
+      <div class="main-container">
+        <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

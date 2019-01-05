@@ -9,8 +9,11 @@ import { Component } from '@angular/core';
     styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
+
+  opened: boolean;
     isHandset: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.Handset
     );
     constructor(private breakpointObserver: BreakpointObserver) {}
+
 }
