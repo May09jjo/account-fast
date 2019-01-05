@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {
+/* import {
     MatButtonModule,
     MatIconModule,
     MatInputModule,
@@ -8,7 +8,9 @@ import {
     MatMenuModule,
     MatSidenavModule,
     MatToolbarModule
-} from '@angular/material';
+} from '@angular/material'; */
+
+import {DemoMaterialModule} from '../../material-module';
 import { TranslateModule } from '@ngx-translate/core';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopnavComponent } from './components/topnav/topnav.component';
@@ -20,13 +22,7 @@ import { NavComponent } from './nav/nav.component';
     imports: [
         CommonModule,
         LayoutRoutingModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatListModule,
+        DemoMaterialModule,
         TranslateModule
     ],
     declarations: [LayoutComponent, NavComponent, TopnavComponent, SidebarComponent]

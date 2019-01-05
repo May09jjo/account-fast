@@ -15,7 +15,6 @@ import { DashboardComponent } from './dashboard.component';
         MatGridListModule,
         StatModule,
         MatCardModule,
-        MatCardModule,
         MatTableModule,
         MatButtonModule,
         MatIconModule,

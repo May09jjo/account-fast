@@ -15,7 +15,12 @@ const routes: Routes = [
             {
                 path: 'dashboard',
                 loadChildren: './dashboard/dashboard.module#DashboardModule'
-            }/* ,
+            },
+            {
+              path: 'clientes',
+              loadChildren: './clientes/clientes.module#ClientesModule'
+            },
+            /* ,
             {
                 path: 'charts',
                 loadChildren: './charts/charts.module#ChartsModule'

@@ -5,11 +5,14 @@
   <div class="nav-brand">
      AccountFast
   </div>
-  <form class="hidden-sm" style="margin-left: 120px; margin-top: 5px">
-      <mat-form-field>
-          <input matInput [placeholder]="'Search' | translate">
-      </mat-form-field>
-  </form>
+
+  <button mat-button [matMenuTriggerFor]="menu">Matenimiento</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [routerLinkActive]="'active'" [routerLink]="['/clientes']" >Mantenimiento de Clientes</button>
+        <button mat-menu-item>Bitacora de Comunicación</button>
+        <button mat-menu-item>Vendedores actual</button>
+      </mat-menu>
+
   <span class="nav-spacer"></span>
 
   <button class="hidden-sm" mat-icon-button [matMenuTriggerFor]="language">
@@ -28,7 +31,17 @@
   </mat-menu>
   <button class="hidden-sm" mat-icon-button [matMenuTriggerFor]="profile">
      <!--  <mat-icon>account_circle</mat-icon> -->
-     <img src="{{urlProfile}}" style=" border-radius: 50%; width: 25px;" >
+
+
+     <div *ngIf="authfire.afsAuth.user | async as user; else noImg">
+      <img src="{{user.photoURL}}" style=" border-radius: 50%; width: 25px; margin-bottom: -10px;" >
+     </div>
+     <ng-template #noImg>
+      <img   src="https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-shadow-circle-512.png" style=" border-radius: 50%; width: 25px; margin-bottom: -10px;" >
+     </ng-template>
+
+
+
   </button>
   <mat-menu #profile="matMenu">
       <button mat-menu-item>

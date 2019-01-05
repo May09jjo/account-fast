@@ -15,17 +15,19 @@ export class TopnavComponent implements OnInit {
     public urlProfile: string;
 
     constructor(public router: Router, private translate: TranslateService,
-      private authfire: AuthFireService) {
+      public authfire: AuthFireService) {
+
         this.router.events.subscribe(val => {
             if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
                 this.toggleSidebar();
             }
         });
-        if (this.authfire.afsAuth.auth.currentUser != null) {
+
+       /*  if (this.authfire.afsAuth.user) {
           this.urlProfile = this.authfire.afsAuth.auth.currentUser.photoURL;
         } else {
           this.urlProfile = 'https://via.placeholder.com/400x400';
-        }
+        } */
     }
 
     ngOnInit() {
