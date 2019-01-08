@@ -1,6 +1,6 @@
-export interface Clientes {
+export interface ClientesInterface {
 
-  $key?: string;
+  id?: string;
   codigo?: string;
   fullName?: string;
   cedula?: string;

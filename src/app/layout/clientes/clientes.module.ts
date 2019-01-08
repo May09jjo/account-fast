@@ -6,6 +6,7 @@ import { ClientesRoutingModule } from './clientes-routing.module';
 import { StatModule } from '../../shared/modules/stat/stat.module';
 import { ClientesComponent } from './clientes.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ModalCreateComponent } from './modal-create/modal-create.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FlexLayoutModule.withConfig({addFlexToParent: false}),
     DemoMaterialModule
   ],
-  declarations: [ClientesComponent]
+  declarations: [ClientesComponent, ModalCreateComponent]
 })
 export class ClientesModule {}

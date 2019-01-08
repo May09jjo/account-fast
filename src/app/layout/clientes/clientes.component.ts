@@ -1,12 +1,13 @@
-import { Clientes } from './../../models/clientes';
+import { ClientesInterface } from './../../models/clientes';
 import { ClientesService } from './../../services/clientes.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthFireService } from '../../auth-fire.service';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig} from '@angular/material';
 import { forEach } from '@angular/router/src/utils/collection';
 import { ValueTransformer } from '@angular/compiler/src/util';
+import { ModalCreateComponent } from './modal-create/modal-create.component';
 
 
 
@@ -20,18 +21,19 @@ export class ClientesComponent implements OnInit {
 
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['codigo', 'fullName', 'cedula', 'email', 'mobile', 'city', 'departmentName', 'actions'];
-  clients: Clientes[];
+  clients: ClientesInterface[];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
 
-  constructor(private clientesService: ClientesService) {}
+  constructor(private clientesService: ClientesService,
+        private dialog: MatDialog) {}
 
   ngOnInit() {
       this.clientesService.getClientes().subscribe(clients => {
           this.clients = clients;
-        this.listData = new MatTableDataSource(this.clients);
+        /* this.listData = new MatTableDataSource(this.clients);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
         this.listData.filterPredicate = (data, filter) => {
@@ -39,6 +41,12 @@ export class ClientesComponent implements OnInit {
             return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
           });
         };
+        */
+
+        console.log(this.clients);
+        this.listData = new MatTableDataSource(this.clients);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
 
       });
 
@@ -56,13 +64,13 @@ export class ClientesComponent implements OnInit {
 
 
   onCreate() {
-   /*  this.service.initializeFormGroup();
+    /* this.service.initializeFormGroup(); */
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    this.dialog.open(EmployeeComponent,dialogConfig);
- */  }
+    dialogConfig.width = '60%';
+    this.dialog.open(ModalCreateComponent, dialogConfig);
+  }
 
   onEdit(row) {
 /*     this.service.populateForm(row);
