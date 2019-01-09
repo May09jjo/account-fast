@@ -7,6 +7,6 @@ export interface ClientesInterface {
   email?: string;
   mobile?: string;
   city?: string;
-  departamentName?: string;
+  departmentName?: string;
 }
 

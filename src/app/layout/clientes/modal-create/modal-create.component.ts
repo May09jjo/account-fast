@@ -24,7 +24,7 @@ export class ModalCreateComponent implements OnInit {
     email: '',
     mobile: '',
     city: '',
-    departamentName: ''
+    departmentName: ''
   };
 
   constructor( public dialogRef: MatDialogRef<ModalCreateComponent>,
@@ -57,7 +57,7 @@ onSubmit() {
     this.clientesInter.email = this.f.email.value;
     this.clientesInter.mobile = this.f.mobile.value;
     this.clientesInter.city = this.f.city.value;
-    this.clientesInter.departamentName = this.f.departamentName.value;
+    this.clientesInter.departmentName = this.f.departmentName.value;
     this.clientesService.addCliente(this.clientesInter);
     this.dialogRef.close();
     console.log('CLIENTE AGREGADO', this.f.fullName.value);

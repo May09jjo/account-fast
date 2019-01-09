@@ -21,7 +21,7 @@ export class ClientesComponent implements OnInit {
 
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['codigo', 'fullName', 'cedula', 'email', 'mobile', 'city', 'departmentName', 'actions'];
-  clients: ClientesInterface[];
+  clientsInt: ClientesInterface[];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,19 +32,8 @@ export class ClientesComponent implements OnInit {
 
   ngOnInit() {
       this.clientesService.getClientes().subscribe(clients => {
-          this.clients = clients;
-        /* this.listData = new MatTableDataSource(this.clients);
-        this.listData.sort = this.sort;
-        this.listData.paginator = this.paginator;
-        this.listData.filterPredicate = (data, filter) => {
-          return this.displayedColumns.some(ele => {
-            return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
-          });
-        };
-        */
-
-        console.log(this.clients);
-        this.listData = new MatTableDataSource(this.clients);
+          this.clientsInt = clients;
+        this.listData = new MatTableDataSource(this.clientsInt);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
 
