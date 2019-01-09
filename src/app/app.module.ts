@@ -29,7 +29,7 @@ import {environment } from '../environments/environment';
 import {AngularFireAuth } from '@angular/fire/auth';
 
 import {PerfilService} from './perfil.service';
-
+import { ClientesService } from './services/clientes.service';
 
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
@@ -64,7 +64,7 @@ export const createTranslateLoader = (http: HttpClient) => {
         AngularFirestoreModule,
         AngularFireModule.initializeApp(environment.firebase)
     ],
-    providers: [AngularFireAuth, PerfilService],
+    providers: [AngularFireAuth, PerfilService, ClientesService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

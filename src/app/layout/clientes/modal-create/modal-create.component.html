@@ -1,47 +1,62 @@
-<form   (ngSubmit)="onSubmit()" >
-  <!-- <mat-grid-list cols="2" rowHeight="300px">
+<form [formGroup]= "registerFormcli"  (ngSubmit)="onSubmit()" >
+  <mat-grid-list cols="2" rowHeight="300px">
     <mat-grid-tile>
       <div class="controles-container">
         <input type="hidden" formControlName="id">
         <mat-form-field>
           <input formControlName="codigo" matInput placeholder="codigo*">
-          <mat-error>This field is mandatory.</mat-error>
+          <mat-error *ngIf="submitted && f.codigo.errors">
+                  <mat-error *ngIf= "f.codigo.errors.required">codec is required</mat-error>
+                  <mat-error *ngIf= "f.codigo.errors.minlength">Minimum 3 charactors needed.</mat-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <input formControlName="fullName" matInput placeholder="Full Name*">
-          <mat-error>This field is mandatory.</mat-error>
+          <mat-error *ngIf="submitted && f.fullName.errors">
+                  <mat-error *ngIf= "f.firstName.errors.required">Name is required</mat-error>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="cedula" matInput placeholder="Cedula / Passaport*">
+          <mat-error *ngIf="submitted && f.cedula.errors">
+                  <mat-error *ngIf= "f.cedula.errors.required">Cedula is required</mat-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <input formControlName="email" matInput placeholder="Email">
-          <mat-error>Invalid email address.</mat-error>
+         <mat-error *ngIf="submitted && f.email.errors">
+                  <mat-error *ngIf= "f.email.errors.required">Name is required</mat-error>
+                  <mat-error *ngIf= "f.email.errors.email">Email is invalid</mat-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <input formControlName="mobile" matInput placeholder="Mobile*">
-          <mat-error *ngIf="f.mobile.errors.required">This field is mandatory.</mat-error>
-          <mat-error *ngIf="f.mobile.errors.minlength">Minimum 8 charactors needed.</mat-error>
+          <mat-error *ngIf="submitted && f.mobile.errors">
+                  <mat-error *ngIf= "f.mobile.errors.required">mobile is required</mat-error>
+                  <mat-error *ngIf= "f.mobile.errors.minlength">Minimum 8 charactors needed.</mat-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <input formControlName="city" matInput placeholder="City">
+          <mat-error *ngIf="submitted && f.city.errors">
+                  <mat-error *ngIf= "f.city.errors.required">Name is required</mat-error>
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <input formControlName="departmentName" matInput placeholder="Department">
+          <mat-error *ngIf="submitted && f.departmentName.errors">
+                  <mat-error *ngIf= "f.departmentName.errors.required">Name is required</mat-error>
+          </mat-error>
         </mat-form-field>
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
       <div class="controles-container">
-
-        <mat-form-field>
-          <input formControlName="hireDate" matInput [matDatepicker]="picker" placeholder="Hire Date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <div class="button-row">
-          <button mat-raised-button color="primary" type="submit" cdkFocusInitial >Submit</button>
-          <button mat-raised-button color="warn" >Clear</button>
+        <div class="button-row" fxLayoutGap="5px">
+          <button mat-raised-button color="primary"  cdkFocusInitial >Submit</button>
+          <button mat-raised-button color="warn" (click)= "onClose()"   >Clear</button>
         </div>
       </div>
     </mat-grid-tile>
-  </mat-grid-list> -->
-  <p>YES</p>
+  </mat-grid-list>
 </form>

@@ -32,4 +32,8 @@ export class ClientesService {
   getClientes() {
     return this.clientesObser;
   }
+
+  addCliente(newcliente: ClientesInterface) {
+    this.clientesCollection.add(newcliente);
+  }
 }
