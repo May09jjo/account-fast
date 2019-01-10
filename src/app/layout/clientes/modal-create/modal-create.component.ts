@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef} from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
 import { ClientesService } from 'src/app/services/clientes.service';
+import { ModalCliService } from '../modal-cli.service';
 
 
 
@@ -13,7 +14,6 @@ import { ClientesService } from 'src/app/services/clientes.service';
 })
 export class ModalCreateComponent implements OnInit {
 
-  registerFormcli: FormGroup;
   submitted = false;
 
   clientesInter: ClientesInterface = {
@@ -28,58 +28,36 @@ export class ModalCreateComponent implements OnInit {
   };
 
   constructor( public dialogRef: MatDialogRef<ModalCreateComponent>,
-              private formBuilder: FormBuilder, private clientesService: ClientesService) { }
+              public serviceForm: ModalCliService) { }
 
-  ngOnInit() {
-    this.registerFormcli = this.formBuilder.group({
-      id:  [''],
-      codigo: ['', [Validators.required, Validators.minLength(3)]],
-      fullName: ['', Validators.required],
-      cedula: ['', Validators.required],
-      email: ['', Validators.email],
-      mobile: ['', [Validators.required, Validators.minLength(8)]],
-      city: ['', Validators.required],
-      departmentName: ['', Validators.required]
-    });
-}
+  ngOnInit() {}
 
-get f() {return this.registerFormcli.controls; }
+/* get f() {return this.registerFormcli.controls; } */
 
 onSubmit() {
   this.submitted = true;
-    if (this.registerFormcli.invalid) {
+    if (this.serviceForm.registerFormcli.invalid) {
       return;
     }
 
-    this.clientesInter.codigo = this.f.codigo.value;
-    this.clientesInter.fullName = this.f.fullName.value;
-    this.clientesInter.cedula = this.f.cedula.value;
-    this.clientesInter.email = this.f.email.value;
-    this.clientesInter.mobile = this.f.mobile.value;
-    this.clientesInter.city = this.f.city.value;
-    this.clientesInter.departmentName = this.f.departmentName.value;
-    this.clientesService.addCliente(this.clientesInter);
+    this.clientesInter.codigo = this.serviceForm.f.codigo.value;
+    this.clientesInter.fullName = this.serviceForm.f.fullName.value;
+    this.clientesInter.cedula = this.serviceForm.f.cedula.value;
+    this.clientesInter.email = this.serviceForm.f.email.value;
+    this.clientesInter.mobile = this.serviceForm.f.mobile.value;
+    this.clientesInter.city = this.serviceForm.f.city.value;
+    this.clientesInter.departmentName = this.serviceForm.f.departmentName.value;
+   /*  this.clientesService.addCliente(this.clientesInter); */
     this.dialogRef.close();
-    console.log('CLIENTE AGREGADO', this.f.fullName.value);
+    console.log('CLIENTE AGREGADO', this.serviceForm.f.fullName.value);
+    this.serviceForm.registerFormcli.reset();
+    this.serviceForm.initializeFormGroup();
   }
 
   onClose() {
     this.dialogRef.close();
-    this.initializeFormGroup();
-    this.registerFormcli.reset();
-  }
-
-  initializeFormGroup() {
-    this.registerFormcli.setValue({
-      id: null,
-      codigo: '',
-      fullName: '',
-      cedula: '',
-      email: '',
-      mobile: '',
-      city: '',
-      department: ''
-    });
+    this.serviceForm.initializeFormGroup();
+    this.serviceForm.registerFormcli.reset();
   }
 
 }

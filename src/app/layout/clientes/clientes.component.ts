@@ -1,3 +1,4 @@
+import { ModalCliService } from './modal-cli.service';
 import { ClientesInterface } from './../../models/clientes';
 import { ClientesService } from './../../services/clientes.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -8,7 +9,6 @@ import {MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig} f
 import { forEach } from '@angular/router/src/utils/collection';
 import { ValueTransformer } from '@angular/compiler/src/util';
 import { ModalCreateComponent } from './modal-create/modal-create.component';
-
 
 
 @Component({
@@ -28,7 +28,8 @@ export class ClientesComponent implements OnInit {
   searchKey: string;
 
   constructor(private clientesService: ClientesService,
-        private dialog: MatDialog) {}
+        private dialog: MatDialog,
+        private serviceForm: ModalCliService) {}
 
   ngOnInit() {
       this.clientesService.getClientes().subscribe(clients => {
@@ -62,12 +63,13 @@ export class ClientesComponent implements OnInit {
   }
 
   onEdit(row) {
-/*     this.service.populateForm(row);
-    const dialogConfig = new MatDialogConfig();
+    this.serviceForm.setClienteModal(row);
+     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    this.dialog.open(EmployeeComponent,dialogConfig); */
+    dialogConfig.width = '60%';
+    this.dialog.open(ModalCreateComponent, dialogConfig);
+    console.log('ARRAY ROW CLIENTE: ', row);
   }
 
   onDelete($key) {

@@ -21,7 +21,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [ClientesComponent,ModalCreateComponent],
+  declarations: [ClientesComponent, ModalCreateComponent],
   entryComponents: [ClientesComponent, ModalCreateComponent]
 })
 export class ClientesModule {}
