@@ -1,4 +1,4 @@
-import { ModalCliService } from './modal-cli.service';
+
 import { ClientesInterface } from './../../models/clientes';
 import { ClientesService } from './../../services/clientes.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -28,8 +28,7 @@ export class ClientesComponent implements OnInit {
   searchKey: string;
 
   constructor(private clientesService: ClientesService,
-        private dialog: MatDialog,
-        private serviceForm: ModalCliService) {}
+        private dialog: MatDialog) {}
 
   ngOnInit() {
       this.clientesService.getClientes().subscribe(clients => {
@@ -63,7 +62,7 @@ export class ClientesComponent implements OnInit {
   }
 
   onEdit(row) {
-    this.serviceForm.setClienteModal(row);
+    this.clientesService.setClienteModal(row);
      const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -72,12 +71,13 @@ export class ClientesComponent implements OnInit {
     console.log('ARRAY ROW CLIENTE: ', row);
   }
 
-  onDelete($key) {
-    /* if(confirm('Are you sure to delete this record ?')){
-    this.service.deleteEmployee($key);
-    this.notificationService.warn('! Deleted successfully');
+  onDelete(id) {
+    if (confirm('Are you sure to delete this record ?')) {
+    this.clientesService.deleteClient(id);
+    /* this.notificationService.warn('! Deleted successfully'); */
     }
- */  }
+
+   }
 
 }
 

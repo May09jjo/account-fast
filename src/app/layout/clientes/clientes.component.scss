@@ -4,6 +4,10 @@
   border-radius: 10px;
 }
 
+@media only screen and (max-width: 767px){
+
+}
+
 .mat-toolbar {
   border-radius: 10px 10px 0px 0px;
 }
@@ -15,6 +19,16 @@
 table {
   width: 100%;
 }
+
+/* .editar-row{
+  display: none;
+} */
+
+.mat-row:hover, .mat-row:hover .editar-row{
+  background: #f5f5f5;
+  /* display: flex; */
+}
+
 
 .mat-form-field {
   font-size: 14px;
@@ -34,3 +48,5 @@ width: 100%;
 .hidden{
   display: none;
 }
+
+/* la tabla se vera mejor cuando el sidevar se oculte. */
