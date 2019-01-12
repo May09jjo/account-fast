@@ -20,6 +20,10 @@ const routes: Routes = [
               path: 'clientes',
               loadChildren: './clientes/clientes.module#ClientesModule'
             },
+            {
+              path: 'bitacora',
+              loadChildren: './bitacora/bitacora.module#BitacoraModule'
+            }
             /* ,
             {
                 path: 'charts',
