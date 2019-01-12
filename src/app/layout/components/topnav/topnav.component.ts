@@ -16,7 +16,7 @@ export class TopnavComponent implements OnInit {
 
     constructor(public router: Router, private translate: TranslateService,
       public authfire: AuthFireService) {
-
+            /* en 1800 es valor anterior es 992 */
         this.router.events.subscribe(val => {
             if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
                 this.toggleSidebar();
