@@ -56,7 +56,6 @@ onSubmit() {
     this.serviceForm.initializeFormGroup();
   }
   onClose() {
-    this.dialogRef.close();
     this.serviceForm.initializeFormGroup();
     this.serviceForm.registerFormcli.reset();
   }

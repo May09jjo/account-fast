@@ -46,4 +46,7 @@ width: 100%;
   display: none;
 }
 
-/* la tabla se vera mejor cuando el sidevar se oculte. */
+/* modal */
+.cdk-overlay-pane{
+  width: 100% !important;
+}

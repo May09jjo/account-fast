@@ -57,7 +57,7 @@ export class ClientesComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
+    if (window.innerWidth > 992) {dialogConfig.width = '50%'; }
     this.dialog.open(ModalCreateComponent, dialogConfig);
   }
 
@@ -66,7 +66,7 @@ export class ClientesComponent implements OnInit {
      const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
+    if (window.innerWidth > 992) {dialogConfig.width = '50%'; }
     this.dialog.open(ModalCreateComponent, dialogConfig);
     console.log('ARRAY ROW CLIENTE: ', row);
   }

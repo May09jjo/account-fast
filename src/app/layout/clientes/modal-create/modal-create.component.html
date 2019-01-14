@@ -1,11 +1,16 @@
-<mat-toolbar color="warn" class="toolbarcli" >
+<!-- <mat-toolbar macolor="warn" class="toolbarcli" >
   <span>Modal Cliente</span>
   <mat-icon (click)= "onClose()" >clear</mat-icon>
-</mat-toolbar>
+</mat-toolbar> -->
+
+<div matDialogTitle  class="title-modal">
+  <span >{{serviceForm.f['id'].value?"Editar Cliente":"Agregar Cliente"}}</span>
+  <button mat-button mat-dialog-close ><mat-icon color="warn" >clear</mat-icon></button>
+</div>
+
+
 <form [formGroup]= "serviceForm.registerFormcli"  (ngSubmit)="onSubmit()" >
-  <mat-grid-list cols="2" rowHeight="300px">
-    <mat-grid-tile>
-      <div class="controles-container">
+        <mat-dialog-content >
         <input type="hidden" formControlName="id">
         <mat-form-field>
           <input formControlName="codigo" matInput placeholder="codigo*">
@@ -52,15 +57,15 @@
                   <mat-error *ngIf= "serviceForm.f.departmentName.errors.required">Name is required</mat-error>
           </mat-error>
         </mat-form-field>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <div class="controles-container">
+
+    </mat-dialog-content>
+
+      <mat-dialog-actions fxLayoutAlign="center end" >
         <div class="button-row" fxLayoutGap="5px">
           <button mat-raised-button color="primary" type="submit"  cdkFocusInitial >Submit</button>
           <button mat-raised-button color="warn" (click)= "onClose()">Clear</button>
         </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+      </mat-dialog-actions>
+
 </form>
+
