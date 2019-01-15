@@ -8,6 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DemoMaterialModule } from 'src/material-module';
 import { MatFormFieldModule, MatDatepickerModule } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ModalBitacoraComponent } from './modal-bitacora/modal-bitacora.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MatDatepickerModule
   ],
-  declarations: [BitacoraComponent]
+  declarations: [BitacoraComponent, ModalBitacoraComponent]
 })
 export class BitacoraModule { }

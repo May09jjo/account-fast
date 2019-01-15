@@ -1,0 +1,72 @@
+
+ <div class="mat-elevation-z8 content client">
+
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Bitacora Comunicación</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+  <div class="filtro-cliente">
+    <!-- <button mat-mini-fab color="accent" (click)="onCreate()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <mat-form-field class="search-form-field" floatLabel="never">
+      <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
+      <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field> -->
+    <h3>Filtrar Cliente</h3>
+    <mat-divider></mat-divider>
+    <mat-form-field class="w-50" appearance="outline">
+        <mat-label>Codigo</mat-label>
+        <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl" >
+      <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let state of filteredStates | async" [value]="state.codigo">
+            <span>{{state.codigo}}</span> |
+            <small>nombre: {{state.name}}</small>
+          </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="w-50" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl" >
+      <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let state of filteredStates | async" [value]="state.codigo">
+            <span>{{state.codigo}}</span> |
+            <small>nombre: {{state.name}}</small>
+          </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+
+  <div class="content-data">
+      <h3>Datos</h3>
+      <mat-divider></mat-divider>
+      <mat-form-field class="w-50" appearance="outline">
+          <mat-label>Fecha</mat-label>
+          <input matInput [matDatepicker]="picker" placeholder="Fecha">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="w-50" appearance="outline">
+            <mat-label>Fecha Efectiva</mat-label>
+            <input matInput [matDatepicker]="pickers" placeholder="Fecha Efectiva">
+            <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+            <mat-datepicker #pickers></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="w-50" appearance="outline">
+              <mat-label>Tipo de Contact</mat-label>
+              <mat-select placeholder="Favorite food">
+                <mat-option *ngFor="let food of foods" [value]="food.value">
+                  {{food.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  </div>
+
+ </div>

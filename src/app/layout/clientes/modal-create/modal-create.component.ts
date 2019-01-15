@@ -1,9 +1,10 @@
+
 import { ClientesInterface } from './../../../models/clientes';
 import { MatDialog, MatDialogRef} from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
 import { ClientesService } from 'src/app/services/clientes.service';
-
+import {AuthFireService } from '../../../auth-fire.service';
 
 
 @Component({
@@ -23,11 +24,13 @@ export class ModalCreateComponent implements OnInit {
     email: '',
     mobile: '',
     city: '',
-    departmentName: ''
+    departmentName: '',
+    idUser: ''
   };
 
   constructor( public dialogRef: MatDialogRef<ModalCreateComponent>,
-              public serviceForm: ClientesService) { }
+              public serviceForm: ClientesService,
+              private authFire: AuthFireService) { }
 
   ngOnInit() {}
 
@@ -45,7 +48,7 @@ onSubmit() {
     this.clientesInter.mobile = this.serviceForm.f.mobile.value;
     this.clientesInter.city = this.serviceForm.f.city.value;
     this.clientesInter.departmentName = this.serviceForm.f.departmentName.value;
-
+    this.clientesInter.idUser = this.authFire.afsAuth.auth.currentUser.uid;
     if (!this.serviceForm.registerFormcli.get('id').value) {
       this.serviceForm.addCliente(this.clientesInter);
     } else {

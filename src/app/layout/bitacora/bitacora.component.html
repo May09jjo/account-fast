@@ -1,14 +1,14 @@
 
- <div class="mat-elevation-z8 content client">
+ <div class="mat-elevation-z8 content-table client">
 
   <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <span>Bitacora Comunicación</span>
+      <span>Mantenimiento de Clientes</span>
     </mat-toolbar-row>
 </mat-toolbar>
 
-  <div class="filtro-cliente">
-    <!-- <button mat-mini-fab color="accent" (click)="onCreate()">
+  <div class="search-div ">
+    <button mat-mini-fab color="accent" (click)="onCreate()">
       <mat-icon>add</mat-icon>
     </button>
     <mat-form-field class="search-form-field" floatLabel="never">
@@ -16,59 +16,33 @@
       <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
         <mat-icon>close</mat-icon>
       </button>
-    </mat-form-field> -->
-    <h3>Filtrar Cliente</h3>
-    <mat-divider></mat-divider>
+    </mat-form-field>
+
+
+    <!-- filtrar por codigo del cliente -->
     <mat-form-field class="w-50" appearance="outline">
         <mat-label>Codigo</mat-label>
         <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl" >
       <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let state of filteredStates | async" [value]="state.codigo">
+          <mat-option *ngFor="let state of filteredStates | async" [value]="state.codigo" (onSelectionChange)="selectionChange(state)">
             <span>{{state.codigo}}</span> |
-            <small>nombre: {{state.name}}</small>
+            <small>nombre: {{state.fullName}}</small>
+
           </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 
-    <mat-form-field class="w-50" appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl" >
-      <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let state of filteredStates | async" [value]="state.codigo">
-            <span>{{state.codigo}}</span> |
-            <small>nombre: {{state.name}}</small>
-          </mat-option>
-      </mat-autocomplete>
+    <mat-form-field class="w-40">
+      <input matInput placeholder="cliente (nombre)" disabled [value]="cliName">
     </mat-form-field>
+
+    <mat-form-field class="w-40">
+      <input matInput placeholder="usuario (nombre)" disabled [value]="userName">
+    </mat-form-field>
+    <!-- end filtro -->
+
   </div>
 
-  <div class="content-data">
-      <h3>Datos</h3>
-      <mat-divider></mat-divider>
-      <mat-form-field class="w-50" appearance="outline">
-          <mat-label>Fecha</mat-label>
-          <input matInput [matDatepicker]="picker" placeholder="Fecha">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field class="w-50" appearance="outline">
-            <mat-label>Fecha Efectiva</mat-label>
-            <input matInput [matDatepicker]="pickers" placeholder="Fecha Efectiva">
-            <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
-            <mat-datepicker #pickers></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field class="w-50" appearance="outline">
-              <mat-label>Tipo de Contact</mat-label>
-              <mat-select placeholder="Favorite food">
-                <mat-option *ngFor="let food of foods" [value]="food.value">
-                  {{food.viewValue}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-  </div>
-<!--
   <div class="table-client" >
     <mat-table [dataSource]="listData"  matSort>
         <ng-container class="" matColumnDef="codigo">
@@ -102,8 +76,10 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button  class="editar-row"  matTooltip="Editar" color="primary" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
-          <button mat-icon-button  class="editar-row"  matTooltip="Eliminar" color="warn" (click)="onDelete(row.id)"><mat-icon>delete_outline</mat-icon></button>
+          <div class="actions-button">
+              <button mat-icon-button  class="editar-row"  matTooltip="Editar" color="primary" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
+              <button mat-icon-button  class="editar-row"  matTooltip="Eliminar" color="warn" (click)="onDelete(row.id)"><mat-icon>delete_outline</mat-icon></button>
+          </div>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="loading">
@@ -122,6 +98,6 @@
       <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hidden':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
     </mat-table>
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
-  </div> -->
+  </div>
 
  </div>

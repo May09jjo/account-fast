@@ -38,7 +38,8 @@ export class ClientesService {
         email: ['', Validators.email],
         mobile: ['', [Validators.required, Validators.minLength(8)]],
         city: ['', Validators.required],
-        departmentName: ['', Validators.required]
+        departmentName: ['', Validators.required],
+        idUser: [null]
       });
    }
 
@@ -57,7 +58,8 @@ export class ClientesService {
        email: '',
        mobile: '',
        city: '',
-       departmentName: ''
+       departmentName: '',
+       idUser: null
      });
    }
 
@@ -75,7 +77,8 @@ export class ClientesService {
       email: newclient.email,
       city: newclient.city,
       mobile: newclient.mobile,
-      departmentName: newclient.departmentName
+      departmentName: newclient.departmentName,
+      idUser: newclient.idUser
     });
     console.log('cliente agregado', newclient.fullName);
   }

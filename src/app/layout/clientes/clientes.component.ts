@@ -32,7 +32,7 @@ export class ClientesComponent implements OnInit {
 
   ngOnInit() {
       this.clientesService.getClientes().subscribe(clients => {
-          this.clientsInt = clients;
+        this.clientsInt = clients;
         this.listData = new MatTableDataSource(this.clientsInt);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;

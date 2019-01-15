@@ -8,5 +8,6 @@ export interface ClientesInterface {
   mobile?: string;
   city?: string;
   departmentName?: string;
+  idUser?: string;
 }
 
