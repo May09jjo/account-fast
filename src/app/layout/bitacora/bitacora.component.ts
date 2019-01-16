@@ -1,3 +1,6 @@
+import { Perfil } from './../../models/perfil';
+import { PerfilService } from './../../perfil.service';
+import { AuthFireService } from 'src/app/auth-fire.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -20,34 +23,34 @@ export class BitacoraComponent implements OnInit {
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['codigo', 'fullName', 'cedula', 'email', 'mobile', 'city', 'departmentName', 'actions'];
   clientsInt: ClientesInterface[];
-
+  userList: Observable<Perfil>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
 
   constructor(private clientesService: ClientesService,
-        private dialog: MatDialog) {
+        private dialog: MatDialog, public aut: AuthFireService, public user: PerfilService) {
 
         }
 
         stateCtrl = new FormControl();
-        // tslint:disable-next-line:member-ordering
         filteredStates: Observable<ClientesInterface[]>;
 
 
   ngOnInit() {
       this.clientesService.getClientes().subscribe(clients => {
         this.clientsInt = clients;
+
         this.listData = new MatTableDataSource(this.clientsInt);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
-
         this.filteredStates = this.stateCtrl.valueChanges
         .pipe(
           startWith(''),
           map(state => state ? this._filterStates(state) : this.clientsInt.slice())
         );
       });
+      console.log('EJECUCIÓN  DE NG-ONINIT');
     }
 
     private _filterStates(value: string): ClientesInterface[] {
@@ -58,8 +61,23 @@ export class BitacoraComponent implements OnInit {
 
     public selectionChange(item) {
           this.cliName = item.fullName;
-          this.userName = item.idUser;
-      }
+          if (item.idUser) {
+          console.log('USER :' + item.idUser);
+          this.user.getNameforId(item.idUser).subscribe(
+            users => {
+              this.userName = users.firstName;
+              console.log(this.userName);
+            }
+          );
+          } else {
+            console.log('No tiene dueños');
+            this.userName = 'No tiene dueño';
+          }
+        }
+
+    getListClienteforUser(idUser) {
+
+    }
 
   onSearchClear() {
     this.searchKey = '';

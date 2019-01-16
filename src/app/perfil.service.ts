@@ -11,13 +11,18 @@ export class PerfilService {
   perfilColletion: AngularFirestoreCollection<Perfil>;
   perfilObser: Observable<Perfil[]>;
   perfilDoc: AngularFirestoreDocument<Perfil>;
+  pefilDoc: AngularFirestoreDocument<Perfil>;
+  perfilget: Observable<Perfil>;
 
   constructor(private afs: AngularFirestore) {
-
     this.perfilColletion = afs.collection<Perfil>('usuarios');
   }
 
 
+  getNameforId(id) {
+    this.perfilDoc = this.afs.doc<Perfil>('usuarios/' + id);
+   return this.perfilget = this.perfilDoc.valueChanges();
+  }
   /* INSERT */
 
   insertPerfil(perfil: Perfil) {

@@ -1,9 +1,11 @@
+import { ClientesComponent } from './../../../.history/src/app/layout/clientes/clientes.component_20190115210836';
 import { ClientesInterface } from './../models/clientes';
 import { Injectable } from '@angular/core';
 import { AngularFirestore , AngularFirestoreCollection , AngularFirestoreDocument} from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { map} from 'rxjs/operators';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { AuthFireService } from '../auth-fire.service';
 
 
 
@@ -17,8 +19,9 @@ export class ClientesService {
   clientesObser: Observable<ClientesInterface[]>;
   clientesDoc: AngularFirestoreDocument<ClientesInterface>;
   registerFormcli: FormGroup;
-  constructor(private afs: AngularFirestore,
-        private formBuilder: FormBuilder) {
+  constructor(public afs: AngularFirestore,
+        private formBuilder: FormBuilder,
+        public authFire: AuthFireService) {
 
   this.clientesCollection = afs.collection<ClientesInterface>('clientes');
 
@@ -45,6 +48,11 @@ export class ClientesService {
 
    getClientes() {
     return this.clientesObser;
+  }
+
+  getClientesforId(iduser) {
+
+    return this.afs.collection('clientes').doc(iduser);
   }
 
    get f() {return this.registerFormcli.controls; }

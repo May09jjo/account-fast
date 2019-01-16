@@ -28,7 +28,7 @@ export class ClientesComponent implements OnInit {
   searchKey: string;
 
   constructor(private clientesService: ClientesService,
-        private dialog: MatDialog) {}
+        private dialog: MatDialog, public authFire: AuthFireService) { }
 
   ngOnInit() {
       this.clientesService.getClientes().subscribe(clients => {
@@ -36,10 +36,7 @@ export class ClientesComponent implements OnInit {
         this.listData = new MatTableDataSource(this.clientsInt);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
-
       });
-
-
     }
 
   onSearchClear() {

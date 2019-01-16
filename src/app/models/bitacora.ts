@@ -1,2 +1,2 @@
-export interface Bitacora {
+export interface BitacoraInterface {
 }
