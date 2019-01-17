@@ -19,7 +19,7 @@ export class BitacoraService {
   constructor(public afs: AngularFirestore,
     private formBuilder: FormBuilder,
     public authFire: AuthFireService) {
-      this.bitacoraCollection = afs.collection<BitacoraInterface>('clientes');
+      this.bitacoraCollection = afs.collection<BitacoraInterface>('bitacora');
 
       this.bitacoraObser = this.bitacoraCollection.snapshotChanges().pipe(
         map(actions => actions.map(a => {
@@ -46,7 +46,14 @@ export class BitacoraService {
     }
 
     getBitacoraforCliente (pertenece) {
-
+      this.bitacoraCollection = this.afs.collection<BitacoraInterface>('bitacora', res => res.where('pertenece', '==', pertenece));
+     return this.bitacoraObser = this.bitacoraCollection.snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as BitacoraInterface;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
     }
 
     get bit() {return this.registerFormbit.controls; }

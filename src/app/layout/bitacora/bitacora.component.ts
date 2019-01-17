@@ -1,3 +1,5 @@
+import { ClientesService } from '../../services/clientes.service';
+import { BitacoraInterface } from './../../models/bitacora';
 import { Perfil } from './../../models/perfil';
 import { PerfilService } from './../../perfil.service';
 import { AuthFireService } from 'src/app/auth-fire.service';
@@ -6,9 +8,9 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
-import { ClientesService } from 'src/app/services/clientes.service';
 import { ClientesInterface } from 'src/app/models/clientes';
 import { ModalCreateComponent } from '../clientes/modal-create/modal-create.component';
+import { BitacoraService } from '../../services/bitacora.service';
 
 
 @Component({
@@ -21,16 +23,25 @@ export class BitacoraComponent implements OnInit {
   public cliName: string;
   public userName: string;
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['codigo', 'fullName', 'cedula', 'email', 'mobile', 'city', 'departmentName', 'actions'];
+  displayedColumns: string[] = ['fecha', 'fechaEfectiva', 'tipoContacto', 'asunto', 'detalle', 'actions'];
   clientsInt: ClientesInterface[];
+  bitacoraInt: BitacoraInterface[];
   userList: Observable<Perfil>;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
 
   constructor(private clientesService: ClientesService,
-        private dialog: MatDialog, public aut: AuthFireService, public user: PerfilService) {
-
+        private dialog: MatDialog, public aut: AuthFireService, public user: PerfilService,
+        public bitacoraService: BitacoraService) {
+          this.clientesService.getClientes().subscribe(client => {
+            this.clientsInt = client;
+            this.filteredStates = this.stateCtrl.valueChanges
+            .pipe(
+              startWith(''),
+              map(state => state ? this._filterStates(state) : this.clientsInt.slice())
+            );
+          });
         }
 
         stateCtrl = new FormControl();
@@ -38,10 +49,10 @@ export class BitacoraComponent implements OnInit {
 
 
   ngOnInit() {
-      this.clientesService.getClientes().subscribe(clients => {
-        this.clientsInt = clients;
+      this.bitacoraService.getBitacora().subscribe(bitacora => {
+        this.bitacoraInt = bitacora;
 
-        this.listData = new MatTableDataSource(this.clientsInt);
+        this.listData = new MatTableDataSource(this.bitacoraInt);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
         this.filteredStates = this.stateCtrl.valueChanges
@@ -67,6 +78,7 @@ export class BitacoraComponent implements OnInit {
             users => {
               this.userName = users.firstName;
               console.log(this.userName);
+              this.getBitacoraforCliente(item.id);
             }
           );
           } else {
@@ -75,8 +87,14 @@ export class BitacoraComponent implements OnInit {
           }
         }
 
-    getListClienteforUser(idUser) {
-
+    getBitacoraforCliente (clienteid): void {
+        this.bitacoraService.getBitacoraforCliente(clienteid).subscribe(bitacora => {
+        this.bitacoraInt = bitacora;
+        console.log(bitacora);
+        this.listData = new MatTableDataSource(this.bitacoraInt);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+      });
     }
 
   onSearchClear() {

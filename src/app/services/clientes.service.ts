@@ -1,4 +1,3 @@
-import { ClientesComponent } from './../../../.history/src/app/layout/clientes/clientes.component_20190115210836';
 import { ClientesInterface } from './../models/clientes';
 import { Injectable } from '@angular/core';
 import { AngularFirestore , AngularFirestoreCollection , AngularFirestoreDocument} from 'angularfire2/firestore';
