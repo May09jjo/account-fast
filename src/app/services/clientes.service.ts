@@ -49,9 +49,15 @@ export class ClientesService {
     return this.clientesObser;
   }
 
-  getClientesforId(iduser) {
-
-    return this.afs.collection('clientes').doc(iduser);
+  getClientesforUser(iduser) {
+    this.clientesCollection = this.afs.collection<ClientesInterface>('clientes', res => res.where('idUser', '==', iduser));
+     return this.clientesObser = this.clientesCollection.snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as ClientesInterface;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
   }
 
    get f() {return this.registerFormcli.controls; }

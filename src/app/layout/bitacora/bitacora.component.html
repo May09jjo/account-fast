@@ -3,7 +3,7 @@
 
   <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <span>Mantenimiento de Clientes</span>
+      <span>Bitacora de Comunicación</span>
     </mat-toolbar-row>
 </mat-toolbar>
 
@@ -27,7 +27,6 @@
           <mat-option *ngFor="let state of filteredStates | async" [value]="state.codigo" (onSelectionChange)="selectionChange(state)">
             <span>{{state.codigo}}</span> |
             <small>nombre: {{state.fullName}}</small>
-
           </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -36,8 +35,16 @@
       <input matInput placeholder="cliente (nombre)" disabled [value]="cliName">
     </mat-form-field>
 
-    <mat-form-field class="w-40">
-      <input matInput placeholder="usuario (nombre)" disabled [value]="userName">
+    <mat-form-field>
+      <mat-select placeholder="Elegir Usuario" [formControl]="userControl" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let usertest of userIntList" [value]="usertest" (onSelectionChange)="selectionChangeUser(usertest)">
+          {{usertest.firstName}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="userControl.hasError('required')">Please choose an user</mat-error>
+      <mat-hint>{{userControl.value?.sound}}</mat-hint>
+      <!-- la opcion de arriba la puedo ocupara mostar el rol(read & write) -->
     </mat-form-field>
     <!-- end filtro -->
 

@@ -8,14 +8,22 @@ import { Observable } from 'rxjs';
 })
 export class PerfilService {
 
-  perfilColletion: AngularFirestoreCollection<Perfil>;
+  perfilCollection: AngularFirestoreCollection<Perfil>;
   perfilObser: Observable<Perfil[]>;
   perfilDoc: AngularFirestoreDocument<Perfil>;
   pefilDoc: AngularFirestoreDocument<Perfil>;
   perfilget: Observable<Perfil>;
 
   constructor(private afs: AngularFirestore) {
-    this.perfilColletion = afs.collection<Perfil>('usuarios');
+    this.perfilCollection = afs.collection<Perfil>('usuarios');
+    /* Mejora : al filtrar los usuarios solo obtener los que tienen cliente creados */
+    this.perfilObser = this.perfilCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Perfil;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
   }
 
 
@@ -23,10 +31,14 @@ export class PerfilService {
     this.perfilDoc = this.afs.doc<Perfil>('usuarios/' + id);
    return this.perfilget = this.perfilDoc.valueChanges();
   }
+
+  getUser() {
+    return this.perfilObser;
+  }
   /* INSERT */
 
   insertPerfil(perfil: Perfil) {
-    this.perfilColletion.doc(perfil.$key).set(perfil);
+    this.perfilCollection.doc(perfil.$key).set(perfil);
     console.log('REGISTRADO');
   }
 

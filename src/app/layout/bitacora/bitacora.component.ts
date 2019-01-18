@@ -4,13 +4,14 @@ import { Perfil } from './../../models/perfil';
 import { PerfilService } from './../../perfil.service';
 import { AuthFireService } from 'src/app/auth-fire.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
 import { ClientesInterface } from 'src/app/models/clientes';
 import { ModalCreateComponent } from '../clientes/modal-create/modal-create.component';
 import { BitacoraService } from '../../services/bitacora.service';
+import { auth } from 'firebase';
 
 
 @Component({
@@ -24,57 +25,54 @@ export class BitacoraComponent implements OnInit {
   public userName: string;
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['fecha', 'fechaEfectiva', 'tipoContacto', 'asunto', 'detalle', 'actions'];
+
   clientsInt: ClientesInterface[];
   bitacoraInt: BitacoraInterface[];
+  userIntList: Perfil[];
   userList: Observable<Perfil>;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
 
+  stateCtrl = new FormControl('', [Validators.required]);
+  filteredStates: Observable<ClientesInterface[]>;
+
+  /* form control para usuarios */
+  userControl = new FormControl('', [Validators.required]);
+
+
   constructor(private clientesService: ClientesService,
-        private dialog: MatDialog, public aut: AuthFireService, public user: PerfilService,
+        private dialog: MatDialog, public aut: AuthFireService, public userService: PerfilService,
         public bitacoraService: BitacoraService) {
+
           this.clientesService.getClientes().subscribe(client => {
-            this.clientsInt = client;
-            this.filteredStates = this.stateCtrl.valueChanges
-            .pipe(
-              startWith(''),
-              map(state => state ? this._filterStates(state) : this.clientsInt.slice())
-            );
+
           });
+
+          this.filtrarclientforUser();
         }
 
-        stateCtrl = new FormControl();
-        filteredStates: Observable<ClientesInterface[]>;
-
-
   ngOnInit() {
-      this.bitacoraService.getBitacora().subscribe(bitacora => {
-        this.bitacoraInt = bitacora;
-
-        this.listData = new MatTableDataSource(this.bitacoraInt);
-        this.listData.sort = this.sort;
-        this.listData.paginator = this.paginator;
-        this.filteredStates = this.stateCtrl.valueChanges
-        .pipe(
-          startWith(''),
-          map(state => state ? this._filterStates(state) : this.clientsInt.slice())
-        );
-      });
-      console.log('EJECUCIÓN  DE NG-ONINIT');
+      this.resetBitacora();
     }
 
     private _filterStates(value: string): ClientesInterface[] {
       const filterValue = value.toLowerCase();
-      /* poner el valor de BitCodCli para filtrar */
+     if (!this.stateCtrl.invalid && this.stateCtrl.touched) {
+        console.log('vacio');
+        this.resetBitacora();
+    }
       return this.clientsInt.filter(state => state.codigo.toLowerCase().indexOf(filterValue) === 0);
     }
 
-    public selectionChange(item) {
-          this.cliName = item.fullName;
+  public selectionChange(item) {
+      this.cliName = item.fullName;
+      this.getBitacoraforCliente(item.id);
+          /* this.cliName = item.fullName;
           if (item.idUser) {
           console.log('USER :' + item.idUser);
-          this.user.getNameforId(item.idUser).subscribe(
+          this.userService.getNameforId(item.idUser).subscribe(
             users => {
               this.userName = users.firstName;
               console.log(this.userName);
@@ -84,10 +82,31 @@ export class BitacoraComponent implements OnInit {
           } else {
             console.log('No tiene dueños');
             this.userName = 'No tiene dueño';
-          }
+          } */
         }
 
-    getBitacoraforCliente (clienteid): void {
+selectionChangeUser(itemuser) {
+    this.clientesService.getClientesforUser(itemuser.id).subscribe(
+      client => {
+        this.clientsInt = client;
+        this.filteredStates = this.stateCtrl.valueChanges
+        .pipe(
+          startWith(''),
+          map(state => state ? this._filterStates(state) : this.clientsInt.slice())
+        );
+      }
+    );
+}
+
+  resetBitacora() {
+      this.bitacoraInt = [];
+      this.listData = new MatTableDataSource(this.bitacoraInt);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      console.log('resetBitacora');
+  }
+
+  getBitacoraforCliente (clienteid): void {
         this.bitacoraService.getBitacoraforCliente(clienteid).subscribe(bitacora => {
         this.bitacoraInt = bitacora;
         console.log(bitacora);
@@ -95,7 +114,7 @@ export class BitacoraComponent implements OnInit {
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
       });
-    }
+  }
 
   onSearchClear() {
     this.searchKey = '';
@@ -105,7 +124,6 @@ export class BitacoraComponent implements OnInit {
   applyFilter() {
     this.listData.filter = this.searchKey.trim().toLowerCase();
   }
-
 
   onCreate() {
     /* this.service.initializeFormGroup(); */
@@ -129,9 +147,16 @@ export class BitacoraComponent implements OnInit {
   onDelete(id) {
     if (confirm('Are you sure to delete this record ?')) {
     this.clientesService.deleteClient(id);
-    /* this.notificationService.warn('! Deleted successfully'); */
     }
 
+   }
+
+   filtrarclientforUser() {
+    this.userService.getUser().subscribe(users => {
+      this.userIntList = users;
+      console.log(this.userIntList);
+
+    });
    }
 
 
