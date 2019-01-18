@@ -1,3 +1,5 @@
+import { ModalBitacoraComponent } from './modal-bitacora/modal-bitacora.component';
+import { ClientesInterface } from 'src/app/models/clientes';
 import { ClientesService } from '../../services/clientes.service';
 import { BitacoraInterface } from './../../models/bitacora';
 import { Perfil } from './../../models/perfil';
@@ -8,28 +10,36 @@ import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
-import { ClientesInterface } from 'src/app/models/clientes';
 import { ModalCreateComponent } from '../clientes/modal-create/modal-create.component';
 import { BitacoraService } from '../../services/bitacora.service';
 import { auth } from 'firebase';
+import { trigger, style, state, transition, animate } from '@angular/animations';
 
 
 @Component({
   selector: 'app-bitacora',
   templateUrl: './bitacora.component.html',
-  styleUrls: ['./bitacora.component.scss']
+  styleUrls: ['./bitacora.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class BitacoraComponent implements OnInit {
 
   public cliName: string;
   public userName: string;
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['fecha', 'fechaEfectiva', 'tipoContacto', 'asunto', 'detalle', 'actions'];
+  displayedColumns: string[] = ['tipoContacto', 'fecha', 'asunto', 'actions'];
 
   clientsInt: ClientesInterface[];
   bitacoraInt: BitacoraInterface[];
   userIntList: Perfil[];
   userList: Observable<Perfil>;
+  expandedElement: ClientesInterface | null;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -40,17 +50,26 @@ export class BitacoraComponent implements OnInit {
 
   /* form control para usuarios */
   userControl = new FormControl('', [Validators.required]);
-
+  usertest: any;
 
   constructor(private clientesService: ClientesService,
         private dialog: MatDialog, public aut: AuthFireService, public userService: PerfilService,
         public bitacoraService: BitacoraService) {
-
-          this.clientesService.getClientes().subscribe(client => {
-
-          });
-
           this.filtrarclientforUser();
+          this.userControl.valueChanges.subscribe( user => {
+            console.log('POR VALUE CHANGES' + user.id);
+            this.resetBitacora();
+            this.clientesService.getClientesforUser(user.id).subscribe(
+              client => {
+                this.clientsInt = client;
+                this.filteredStates = this.stateCtrl.valueChanges
+                .pipe(
+                  startWith(''),
+                  map(filtroClient => filtroClient ? this._filterStates(filtroClient) : this.clientsInt.slice())
+                );
+              }
+            );
+          });
         }
 
   ngOnInit() {
@@ -59,11 +78,7 @@ export class BitacoraComponent implements OnInit {
 
     private _filterStates(value: string): ClientesInterface[] {
       const filterValue = value.toLowerCase();
-     if (!this.stateCtrl.invalid && this.stateCtrl.touched) {
-        console.log('vacio');
-        this.resetBitacora();
-    }
-      return this.clientsInt.filter(state => state.codigo.toLowerCase().indexOf(filterValue) === 0);
+      return this.clientsInt.filter(filtroClient => filtroClient.codigo.toLowerCase().indexOf(filterValue) === 0);
     }
 
   public selectionChange(item) {
@@ -83,20 +98,9 @@ export class BitacoraComponent implements OnInit {
             console.log('No tiene dueños');
             this.userName = 'No tiene dueño';
           } */
-        }
 
-selectionChangeUser(itemuser) {
-    this.clientesService.getClientesforUser(itemuser.id).subscribe(
-      client => {
-        this.clientsInt = client;
-        this.filteredStates = this.stateCtrl.valueChanges
-        .pipe(
-          startWith(''),
-          map(state => state ? this._filterStates(state) : this.clientsInt.slice())
-        );
-      }
-    );
-}
+          console.log('select cliente' + item.fullName);
+        }
 
   resetBitacora() {
       this.bitacoraInt = [];
@@ -131,7 +135,7 @@ selectionChangeUser(itemuser) {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (window.innerWidth > 992) {dialogConfig.width = '50%'; }
-    this.dialog.open(ModalCreateComponent, dialogConfig);
+    this.dialog.open(ModalBitacoraComponent, dialogConfig);
   }
 
   onEdit(row) {
@@ -140,7 +144,7 @@ selectionChangeUser(itemuser) {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (window.innerWidth > 992) {dialogConfig.width = '50%'; }
-    this.dialog.open(ModalCreateComponent, dialogConfig);
+    this.dialog.open(ModalBitacoraComponent, dialogConfig);
     console.log('ARRAY ROW CLIENTE: ', row);
   }
 
@@ -154,7 +158,7 @@ selectionChangeUser(itemuser) {
    filtrarclientforUser() {
     this.userService.getUser().subscribe(users => {
       this.userIntList = users;
-      console.log(this.userIntList);
+      console.log('LIST DE USUARIOS' + this.userIntList);
 
     });
    }

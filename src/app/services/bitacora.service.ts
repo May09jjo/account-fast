@@ -34,8 +34,8 @@ export class BitacoraService {
       fecha: ['', [Validators.required, Validators.minLength(3)]],
       fechaEfectiva: ['', Validators.required],
       asunto: ['', Validators.required],
-      tipoContacto: ['', Validators.email],
-      detalle: ['', [Validators.required, Validators.minLength(8)]],
+      tipoContacto: ['', Validators.required],
+      detalle: ['', [Validators.required, Validators.minLength(125)]],
       pertenece: [null]
     });
 

@@ -1,18 +1,12 @@
+import { BitacoraInterface } from './../../../models/bitacora';
+import { BitacoraService } from './../../../services/bitacora.service';
 import { Component, OnInit } from '@angular/core';
 import { startWith, map } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
+import {AuthFireService } from '../../../auth-fire.service';
+import { MatDialogRef } from '@angular/material';
 
-
-export interface BitCodCli {
-  codigo: string;
-  name: string;
-}
-
-export interface Food {
-  value: string;
-  viewValue: string;
-}
 
 @Component({
   selector: 'app-modal-bitacora',
@@ -23,54 +17,53 @@ export interface Food {
 
 export class ModalBitacoraComponent implements OnInit {
 
-  constructor() {
-    this.filteredStates = this.stateCtrl.valueChanges
-      .pipe(
-        startWith(''),
-        map(state => state ? this._filterStates(state) : this.states.slice())
-      );
+submitted = false;
+
+bitacoraInter: BitacoraInterface = {
+  id: '',
+  fecha: '',
+  fechaEfectiva: '',
+  asunto: '',
+  tipoContacto: '',
+  detalle: '',
+  pertenece: ''
+};
+
+
+  constructor(public dialogRef: MatDialogRef<ModalBitacoraComponent> ,
+    public serviceFormBit: BitacoraService,
+    private authFire: AuthFireService) {
   }
-
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
-
-
-  // tslint:disable-next-line:member-ordering
-  stateCtrl = new FormControl();
-  // tslint:disable-next-line:member-ordering
-  filteredStates: Observable<BitCodCli[]>;
-
-  states: BitCodCli[] = [
-    {
-      codigo: '2.978M',
-      name: 'Arkansas',
-    },
-    {
-      codigo: '39.14M',
-      name: 'California',
-
-    },
-    {
-      codigo: '20.27M',
-      name: 'Florida',
-
-    },
-    {
-      codigo: '27.47M',
-      name: 'Texas',
-    }
-  ];
 
   ngOnInit() {
   }
 
-  private _filterStates(value: string): BitCodCli[] {
-    const filterValue = value.toLowerCase();
-    /* poner el valor de BitCodCli para filtrar */
-    return this.states.filter(state => state.codigo.toLowerCase().indexOf(filterValue) === 0);
-  }
+  onSubmit() {
+    this.submitted = true;
+      if (this.serviceFormBit.registerFormbit.invalid) {
+        return;
+      }
+      /* this.clientesInter.id = this.serviceForm.f.id.value;
+      this.clientesInter.codigo = this.serviceForm.f.codigo.value;
+      this.clientesInter.fullName = this.serviceForm.f.fullName.value;
+      this.clientesInter.cedula = this.serviceForm.f.cedula.value;
+      this.clientesInter.email = this.serviceForm.f.email.value;
+      this.clientesInter.mobile = this.serviceForm.f.mobile.value;
+      this.clientesInter.city = this.serviceForm.f.city.value;
+      this.clientesInter.departmentName = this.serviceForm.f.departmentName.value;
+      this.clientesInter.idUser = this.authFire.afsAuth.auth.currentUser.uid;
+      if (!this.serviceForm.registerFormcli.get('id').value) {
+        this.serviceForm.addCliente(this.clientesInter);
+      } else {
+        this.serviceForm.updateClient(this.clientesInter);
+      }
+      this.dialogRef.close();
+      this.serviceForm.registerFormcli.reset();
+      this.serviceForm.initializeFormGroup(); */
+    }
+    onClose() {
+      /* this.serviceFormBit.initializeFormGroup();
+      this.serviceFormBit.registerFormbit.reset(); */
+    }
 
 }

@@ -1,72 +1,70 @@
+<!-- <mat-toolbar macolor="warn" class="toolbarcli" >
+  <span>Modal Cliente</span>
+  <mat-icon (click)= "onClose()" >clear</mat-icon>
+</mat-toolbar> -->
 
- <div class="mat-elevation-z8 content client">
-
-  <mat-toolbar color="primary">
-    <mat-toolbar-row>
-      <span>Bitacora Comunicación</span>
-    </mat-toolbar-row>
-</mat-toolbar>
-
-  <div class="filtro-cliente">
-    <!-- <button mat-mini-fab color="accent" (click)="onCreate()">
-      <mat-icon>add</mat-icon>
-    </button>
-    <mat-form-field class="search-form-field" floatLabel="never">
-      <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
-      <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field> -->
-    <h3>Filtrar Cliente</h3>
-    <mat-divider></mat-divider>
-    <mat-form-field class="w-50" appearance="outline">
-        <mat-label>Codigo</mat-label>
-        <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl" >
-      <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let state of filteredStates | async" [value]="state.codigo">
-            <span>{{state.codigo}}</span> |
-            <small>nombre: {{state.name}}</small>
-          </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-
-    <mat-form-field class="w-50" appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input matInput placeholder="State" aria-label="State" [matAutocomplete]="auto" [formControl]="stateCtrl" >
-      <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let state of filteredStates | async" [value]="state.codigo">
-            <span>{{state.codigo}}</span> |
-            <small>nombre: {{state.name}}</small>
-          </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+<div matDialogTitle  class="title-modal">
+    <span >{{serviceFormBit.bit['id'].value?"Editar Cliente":"Agregar Cliente"}}</span>
+    <button mat-button mat-dialog-close ><mat-icon color="warn" >clear</mat-icon></button>
   </div>
 
-  <div class="content-data">
-      <h3>Datos</h3>
-      <mat-divider></mat-divider>
-      <mat-form-field class="w-50" appearance="outline">
-          <mat-label>Fecha</mat-label>
-          <input matInput [matDatepicker]="picker" placeholder="Fecha">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
 
-        <mat-form-field class="w-50" appearance="outline">
-            <mat-label>Fecha Efectiva</mat-label>
-            <input matInput [matDatepicker]="pickers" placeholder="Fecha Efectiva">
-            <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
-            <mat-datepicker #pickers></mat-datepicker>
+  <form [formGroup]= "serviceFormBit.registerFormbit"  (ngSubmit)="onSubmit()" >
+          <mat-dialog-content >
+          <input type="hidden" formControlName="id">
+          <mat-form-field>
+            <input formControlName="fecha" matInput placeholder="fecha*">
+            <mat-error *ngIf="submitted && serviceFormBit.bit.fecha.errors">
+                    <mat-error *ngIf= "serviceFormBit.bit.fecha.errors.required">codec is required</mat-error>
+                    <mat-error *ngIf= "serviceFormBit.bit.fecha.errors.minlength">Minimum 3 charactors needed.</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="fechaEfectiva" matInput placeholder="Full Name*">
+            <mat-error *ngIf="submitted && serviceFormBit.bit.fechaEfectiva.errors">
+                    <mat-error *ngIf= "serviceFormBit.bit.fechaEfectiva.errors.required">Name is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="asunto" matInput placeholder="asunto*">
+            <mat-error *ngIf="submitted && serviceFormBit.bit.asunto.errors">
+                    <mat-error *ngIf= "serviceFormBit.bit.asunto.errors.required">Cedula is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="tipoContacto" matInput placeholder="Email">
+           <mat-error *ngIf="submitted && serviceFormBit.bit.tipoContacto.errors">
+                    <mat-error *ngIf= "serviceFormBit.bit.tipoContacto.errors.required">Name is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="detalle" matInput placeholder="Mobile*">
+            <mat-error *ngIf="submitted && serviceFormBit.bit.detalle.errors">
+                    <mat-error *ngIf= "serviceFormBit.bit.detalle.errors.required">detalle is required</mat-error>
+                    <mat-error *ngIf= "serviceFormBit.bit.detalle.errors.minlength">Minimum 125 charactors needed.</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="city" matInput placeholder="City">
+            <mat-error *ngIf="submitted && serviceFormBit.bit.city.errors">
+                    <mat-error *ngIf= "serviceFormBit.bit.city.errors.required">Name is required</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="departmentName" matInput placeholder="Department">
+            <mat-error *ngIf="submitted && serviceFormBit.bit.departmentName.errors">
+                    <mat-error *ngIf= "serviceFormBit.bit.departmentName.errors.required">Name is required</mat-error>
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field class="w-50" appearance="outline">
-              <mat-label>Tipo de Contact</mat-label>
-              <mat-select placeholder="Favorite food">
-                <mat-option *ngFor="let food of foods" [value]="food.value">
-                  {{food.viewValue}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-  </div>
+      </mat-dialog-content>
 
- </div>
+        <mat-dialog-actions fxLayoutAlign="center end" >
+          <div class="button-row" fxLayoutGap="5px">
+            <button mat-raised-button color="primary" type="submit"  cdkFocusInitial >Submit</button>
+            <button mat-raised-button color="warn" (click)= "onClose()">Clear</button>
+          </div>
+        </mat-dialog-actions>
+
+  </form>
+

@@ -22,6 +22,7 @@ import { ModalBitacoraComponent } from './modal-bitacora/modal-bitacora.componen
     ReactiveFormsModule,
     MatDatepickerModule
   ],
-  declarations: [BitacoraComponent, ModalBitacoraComponent]
+  declarations: [BitacoraComponent, ModalBitacoraComponent],
+  entryComponents: [BitacoraComponent, ModalBitacoraComponent]
 })
 export class BitacoraModule { }
