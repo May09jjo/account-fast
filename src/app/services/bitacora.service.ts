@@ -28,14 +28,13 @@ export class BitacoraService {
           return { id, ...data };
         }))
       );
-
     this.registerFormbit = this.formBuilder.group({
       id:  [null],
-      fecha: ['', [Validators.required, Validators.minLength(3)]],
+      fecha: [new Date()],
       fechaEfectiva: ['', Validators.required],
-      asunto: ['', Validators.required],
+      asunto: ['', [Validators.required, Validators.maxLength(50)]],
       tipoContacto: ['', Validators.required],
-      detalle: ['', [Validators.required, Validators.minLength(125)]],
+      detalle: ['', [Validators.required, Validators.maxLength(125)]],
       pertenece: [null]
     });
 
@@ -57,4 +56,53 @@ export class BitacoraService {
     }
 
     get bit() {return this.registerFormbit.controls; }
+
+    initializeFormGroup() {
+      this.registerFormbit.setValue({
+        id: null,
+        fecha: '',
+        fechaEfectiva: '',
+        asunto: '',
+        tipoContacto: '',
+        detalle: '',
+        pertenece: null
+      });
+    }
+
+    setBitacoraModal(bitacora) {
+      this.registerFormbit.setValue(bitacora);
+    }
+    setPerteneceCli(pertenece) {
+      this.bit.pertenece.setValue(pertenece);
+    }
+
+      /* CRUD */
+
+  addCliente(newbitacora: BitacoraInterface) {
+    this.bitacoraCollection.add({
+      fecha: newbitacora.fecha,
+      fechaEfectiva: newbitacora.fechaEfectiva,
+      tipoContacto: newbitacora.tipoContacto,
+      asunto: newbitacora.asunto,
+      detalle: newbitacora.detalle,
+      pertenece: newbitacora.pertenece
+    });
+    console.log('bitacora agregada', newbitacora.asunto);
+  }
+
+  updateClient(upBitacora: BitacoraInterface) {
+    this.bitacoraCollection.doc(upBitacora.id).update({
+         fecha:  upBitacora.fecha,
+         fechaEfectiva: upBitacora.fechaEfectiva,
+         tipoContacto: upBitacora.tipoContacto,
+         asunto:  upBitacora.asunto,
+         detalle:   upBitacora.detalle,
+         pertenece: upBitacora.pertenece,
+    });
+  }
+
+  deleteClient(id) {
+    this.bitacoraCollection.doc(id).delete();
+     console.log('Bitacora eliminada', id);
+  }
 }

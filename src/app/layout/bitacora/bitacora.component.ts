@@ -36,6 +36,7 @@ export class BitacoraComponent implements OnInit {
   displayedColumns: string[] = ['tipoContacto', 'fecha', 'asunto', 'actions'];
 
   clientsInt: ClientesInterface[];
+  perteneceCli: string;
   bitacoraInt: BitacoraInterface[];
   userIntList: Perfil[];
   userList: Observable<Perfil>;
@@ -83,6 +84,7 @@ export class BitacoraComponent implements OnInit {
 
   public selectionChange(item) {
       this.cliName = item.fullName;
+      this.perteneceCli = item.id;
       this.getBitacoraforCliente(item.id);
           /* this.cliName = item.fullName;
           if (item.idUser) {
@@ -130,16 +132,18 @@ export class BitacoraComponent implements OnInit {
   }
 
   onCreate() {
-    /* this.service.initializeFormGroup(); */
+    this.bitacoraService.initializeFormGroup();
+    this.bitacoraService.setPerteneceCli(this.perteneceCli);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     if (window.innerWidth > 992) {dialogConfig.width = '50%'; }
     this.dialog.open(ModalBitacoraComponent, dialogConfig);
+    console.log('ARRAY ROW BITACORA: ', this.perteneceCli);
   }
 
   onEdit(row) {
-    this.clientesService.setClienteModal(row);
+    this.bitacoraService.setBitacoraModal(row);
      const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

@@ -4,56 +4,48 @@
 </mat-toolbar> -->
 
 <div matDialogTitle  class="title-modal">
-    <span >{{serviceFormBit.bit['id'].value?"Editar Cliente":"Agregar Cliente"}}</span>
+    <span >{{serviceFormBit.bit['id'].value?"Editar Bitacora":"Agregar Bitacora"}}</span>
     <button mat-button mat-dialog-close ><mat-icon color="warn" >clear</mat-icon></button>
   </div>
-
+    <div class="row-pertenece">
+      <strong>Cliente : Michael Jiron Ojeda</strong>
+    </div>
 
   <form [formGroup]= "serviceFormBit.registerFormbit"  (ngSubmit)="onSubmit()" >
           <mat-dialog-content >
           <input type="hidden" formControlName="id">
+          <input type="hidden" formControlName="pertenece">
           <mat-form-field>
-            <input formControlName="fecha" matInput placeholder="fecha*">
-            <mat-error *ngIf="submitted && serviceFormBit.bit.fecha.errors">
-                    <mat-error *ngIf= "serviceFormBit.bit.fecha.errors.required">codec is required</mat-error>
-                    <mat-error *ngIf= "serviceFormBit.bit.fecha.errors.minlength">Minimum 3 charactors needed.</mat-error>
-            </mat-error>
+            <input matInput [matDatepicker]="picker1" placeholder="fecha" formCotrolName="fecha" disabled>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1  disabled="false"></mat-datepicker>
+            <mat-hint>{{serviceFormBit.bit.fecha.value}}</mat-hint>
           </mat-form-field>
+
           <mat-form-field>
-            <input formControlName="fechaEfectiva" matInput placeholder="Full Name*">
+            <input formControlName="fechaEfectiva" matInput placeholder="Fecha Efectiva*">
             <mat-error *ngIf="submitted && serviceFormBit.bit.fechaEfectiva.errors">
-                    <mat-error *ngIf= "serviceFormBit.bit.fechaEfectiva.errors.required">Name is required</mat-error>
+                    <mat-error *ngIf= "serviceFormBit.bit.fechaEfectiva.errors.required">Fecha Efectiva is required</mat-error>
             </mat-error>
           </mat-form-field>
           <mat-form-field>
             <input formControlName="asunto" matInput placeholder="asunto*">
             <mat-error *ngIf="submitted && serviceFormBit.bit.asunto.errors">
-                    <mat-error *ngIf= "serviceFormBit.bit.asunto.errors.required">Cedula is required</mat-error>
+                    <mat-error *ngIf= "serviceFormBit.bit.asunto.errors.required">Asunto is required</mat-error>
+                    <mat-error *ngIf= "serviceFormBit.bit.asunto.errors.maxlength">Minimum 50 charactors needed.</mat-error>
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input formControlName="tipoContacto" matInput placeholder="Email">
+            <input formControlName="tipoContacto" matInput placeholder="Tipo Contacta">
            <mat-error *ngIf="submitted && serviceFormBit.bit.tipoContacto.errors">
-                    <mat-error *ngIf= "serviceFormBit.bit.tipoContacto.errors.required">Name is required</mat-error>
+                    <mat-error *ngIf= "serviceFormBit.bit.tipoContacto.errors.required">Tipo Contacto is required</mat-error>
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input formControlName="detalle" matInput placeholder="Mobile*">
+            <input formControlName="detalle" matInput placeholder="Detalle*">
             <mat-error *ngIf="submitted && serviceFormBit.bit.detalle.errors">
-                    <mat-error *ngIf= "serviceFormBit.bit.detalle.errors.required">detalle is required</mat-error>
-                    <mat-error *ngIf= "serviceFormBit.bit.detalle.errors.minlength">Minimum 125 charactors needed.</mat-error>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input formControlName="city" matInput placeholder="City">
-            <mat-error *ngIf="submitted && serviceFormBit.bit.city.errors">
-                    <mat-error *ngIf= "serviceFormBit.bit.city.errors.required">Name is required</mat-error>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input formControlName="departmentName" matInput placeholder="Department">
-            <mat-error *ngIf="submitted && serviceFormBit.bit.departmentName.errors">
-                    <mat-error *ngIf= "serviceFormBit.bit.departmentName.errors.required">Name is required</mat-error>
+                    <mat-error *ngIf= "serviceFormBit.bit.detalle.errors.required">Detalle is required</mat-error>
+                    <mat-error *ngIf= "serviceFormBit.bit.detalle.errors.maxlength">Minimum 125 charactors needed.</mat-error>
             </mat-error>
           </mat-form-field>
 

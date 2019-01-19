@@ -43,27 +43,28 @@ bitacoraInter: BitacoraInterface = {
       if (this.serviceFormBit.registerFormbit.invalid) {
         return;
       }
-      /* this.clientesInter.id = this.serviceForm.f.id.value;
-      this.clientesInter.codigo = this.serviceForm.f.codigo.value;
-      this.clientesInter.fullName = this.serviceForm.f.fullName.value;
-      this.clientesInter.cedula = this.serviceForm.f.cedula.value;
-      this.clientesInter.email = this.serviceForm.f.email.value;
-      this.clientesInter.mobile = this.serviceForm.f.mobile.value;
-      this.clientesInter.city = this.serviceForm.f.city.value;
-      this.clientesInter.departmentName = this.serviceForm.f.departmentName.value;
-      this.clientesInter.idUser = this.authFire.afsAuth.auth.currentUser.uid;
-      if (!this.serviceForm.registerFormcli.get('id').value) {
-        this.serviceForm.addCliente(this.clientesInter);
+      this.bitacoraInter.fecha = this.serviceFormBit.bit.fecha.value;
+      this.bitacoraInter.id = this.serviceFormBit.bit.id.value;
+      this.bitacoraInter.fechaEfectiva = this.serviceFormBit.bit.fechaEfectiva.value;
+      this.bitacoraInter.asunto = this.serviceFormBit.bit.asunto.value;
+      this.bitacoraInter.tipoContacto = this.serviceFormBit.bit.tipoContacto.value;
+      this.bitacoraInter.detalle = this.serviceFormBit.bit.detalle.value;
+      this.bitacoraInter.pertenece = this.serviceFormBit.bit.pertenece.value;
+
+      if (!this.serviceFormBit.registerFormbit.get('id').value) {
+       /*  this.serviceFormBit.addCliente(this.bitacoraInter); */
+       console.log('BITACORA AGREGADA:' + this.serviceFormBit.bit.fecha.value);
       } else {
-        this.serviceForm.updateClient(this.clientesInter);
+        /* this.serviceFormBit.updateClient(this.bitacoraInter); */
       }
       this.dialogRef.close();
-      this.serviceForm.registerFormcli.reset();
-      this.serviceForm.initializeFormGroup(); */
+      this.serviceFormBit.registerFormbit.reset();
+      this.serviceFormBit.initializeFormGroup();
     }
     onClose() {
-      /* this.serviceFormBit.initializeFormGroup();
-      this.serviceFormBit.registerFormbit.reset(); */
+      this.serviceFormBit.initializeFormGroup();
+      this.serviceFormBit.registerFormbit.reset();
+      /* Al hacer reset al editar un elemento el id se elimina ver error */
     }
 
 }
