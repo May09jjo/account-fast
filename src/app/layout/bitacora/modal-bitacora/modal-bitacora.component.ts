@@ -18,6 +18,7 @@ import { MatDialogRef } from '@angular/material';
 export class ModalBitacoraComponent implements OnInit {
 
 submitted = false;
+date: any ;
 
 bitacoraInter: BitacoraInterface = {
   id: '',
@@ -43,7 +44,7 @@ bitacoraInter: BitacoraInterface = {
       if (this.serviceFormBit.registerFormbit.invalid) {
         return;
       }
-      this.bitacoraInter.fecha = this.serviceFormBit.bit.fecha.value;
+      this.bitacoraInter.fecha = this.date;
       this.bitacoraInter.id = this.serviceFormBit.bit.id.value;
       this.bitacoraInter.fechaEfectiva = this.serviceFormBit.bit.fechaEfectiva.value;
       this.bitacoraInter.asunto = this.serviceFormBit.bit.asunto.value;
@@ -52,8 +53,7 @@ bitacoraInter: BitacoraInterface = {
       this.bitacoraInter.pertenece = this.serviceFormBit.bit.pertenece.value;
 
       if (!this.serviceFormBit.registerFormbit.get('id').value) {
-       /*  this.serviceFormBit.addCliente(this.bitacoraInter); */
-       console.log('BITACORA AGREGADA:' + this.serviceFormBit.bit.fecha.value);
+        this.serviceFormBit.addCliente(this.bitacoraInter);
       } else {
         /* this.serviceFormBit.updateClient(this.bitacoraInter); */
       }
@@ -65,6 +65,11 @@ bitacoraInter: BitacoraInterface = {
       this.serviceFormBit.initializeFormGroup();
       this.serviceFormBit.registerFormbit.reset();
       /* Al hacer reset al editar un elemento el id se elimina ver error */
+    }
+
+    addEvent(event) {
+      console.log(event.value);
+        this.date = event.value;
     }
 
 }

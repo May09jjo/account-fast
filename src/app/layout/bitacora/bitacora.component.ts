@@ -115,6 +115,11 @@ export class BitacoraComponent implements OnInit {
   getBitacoraforCliente (clienteid): void {
         this.bitacoraService.getBitacoraforCliente(clienteid).subscribe(bitacora => {
         this.bitacoraInt = bitacora;
+        bitacora.map(vit => {
+          const da = new Date (vit.fecha.seconds * 1000);
+          console.log(da.getDate());
+          vit.fecha = da;
+        });
         console.log(bitacora);
         this.listData = new MatTableDataSource(this.bitacoraInt);
         this.listData.sort = this.sort;

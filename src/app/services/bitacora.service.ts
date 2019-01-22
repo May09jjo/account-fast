@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
@@ -31,7 +32,7 @@ export class BitacoraService {
     this.registerFormbit = this.formBuilder.group({
       id:  [null],
       fecha: [new Date()],
-      fechaEfectiva: ['', Validators.required],
+      fechaEfectiva: [''],
       asunto: ['', [Validators.required, Validators.maxLength(50)]],
       tipoContacto: ['', Validators.required],
       detalle: ['', [Validators.required, Validators.maxLength(125)]],
