@@ -3,7 +3,7 @@ export interface BitacoraInterface {
   asunto?: string;
   detalle?: string;
   fecha?: any;
-  fechaEfectiva?: string;
+  fechaEfectiva?: any;
   tipoContacto?: string;
   pertenece?: string;
   }

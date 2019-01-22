@@ -19,7 +19,7 @@ export class ModalBitacoraComponent implements OnInit {
 
 submitted = false;
 date: any ;
-
+dateEfec: any;
 bitacoraInter: BitacoraInterface = {
   id: '',
   fecha: '',
@@ -44,9 +44,9 @@ bitacoraInter: BitacoraInterface = {
       if (this.serviceFormBit.registerFormbit.invalid) {
         return;
       }
-      this.bitacoraInter.fecha = this.date;
       this.bitacoraInter.id = this.serviceFormBit.bit.id.value;
-      this.bitacoraInter.fechaEfectiva = this.serviceFormBit.bit.fechaEfectiva.value;
+      this.bitacoraInter.fecha = this.date;
+      this.bitacoraInter.fechaEfectiva = this.dateEfec;
       this.bitacoraInter.asunto = this.serviceFormBit.bit.asunto.value;
       this.bitacoraInter.tipoContacto = this.serviceFormBit.bit.tipoContacto.value;
       this.bitacoraInter.detalle = this.serviceFormBit.bit.detalle.value;
@@ -67,9 +67,13 @@ bitacoraInter: BitacoraInterface = {
       /* Al hacer reset al editar un elemento el id se elimina ver error */
     }
 
-    addEvent(event) {
-      console.log(event.value);
+    addEvent(event, vol: boolean) {
+      if (vol === true) {
         this.date = event.value;
+      } else {
+        this.dateEfec = event.value;
+      }
+      console.log(event.value);
     }
 
 }

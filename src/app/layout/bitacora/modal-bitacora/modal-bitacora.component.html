@@ -16,13 +16,13 @@
           <input type="hidden" formControlName="id">
           <input type="hidden" formControlName="pertenece">
           <mat-form-field>
-            <input matInput [value]="serviceFormBit.bit.fecha.value" (dateInput)="addEvent($event)" [matDatepicker]="picker1" placeholder="fecha" formCotrolName="fecha" disabled>
+            <input matInput [value]="serviceFormBit.bit.fecha.value" (dateInput)="addEvent($event, true)" [matDatepicker]="picker1" placeholder="fecha" formCotrolName="fecha" disabled>
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1  disabled="false"></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field>
-            <input matInput [matDatepicker]="picker2" placeholder="fechaEfectiva" [value]="date" disabled>
+            <input matInput [matDatepicker]="picker2" placeholder="fechaEfectiva" [value]="serviceFormBit.bit.fechaEfectiva.value" (dateInput)="addEvent($event, false)" formCotrolName="fechaEfectiva" disabled>
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2  disabled="false"></mat-datepicker>
           </mat-form-field>
@@ -39,8 +39,8 @@
                     <mat-error *ngIf= "serviceFormBit.bit.tipoContacto.errors.required">Tipo Contacto is required</mat-error>
             </mat-error>
           </mat-form-field>
-          <mat-form-field>
-            <input formControlName="detalle" matInput placeholder="Detalle*">
+          <mat-form-field class="textarea">
+              <textarea formControlName="detalle" matInput placeholder="Detalle*"></textarea>
             <mat-error *ngIf="submitted && serviceFormBit.bit.detalle.errors">
                     <mat-error *ngIf= "serviceFormBit.bit.detalle.errors.required">Detalle is required</mat-error>
                     <mat-error *ngIf= "serviceFormBit.bit.detalle.errors.maxlength">Minimum 125 charactors needed.</mat-error>

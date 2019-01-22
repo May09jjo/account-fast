@@ -117,8 +117,10 @@ export class BitacoraComponent implements OnInit {
         this.bitacoraInt = bitacora;
         bitacora.map(vit => {
           const da = new Date (vit.fecha.seconds * 1000);
+          const daefec = new Date (vit.fechaEfectiva.seconds * 1000);
           console.log(da.getDate());
           vit.fecha = da;
+          vit.fechaEfectiva = daefec;
         });
         console.log(bitacora);
         this.listData = new MatTableDataSource(this.bitacoraInt);
