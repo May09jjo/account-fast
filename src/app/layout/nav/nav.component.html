@@ -52,10 +52,25 @@
 
         <button mat-button [matMenuTriggerFor]="menu">Matenimiento</button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item [routerLinkActive]="'active'" [routerLink]="['/clientes']" >Clientes</button>
-          <button mat-menu-item [routerLinkActive]="'active'" [routerLink]="['/bitacora']"  >Bitacora de Comunicación</button>
-          <button mat-menu-item>Vendedores actual</button>
+          <button mat-menu-item [matMenuTriggerFor]="clientes">Clientes</button>
+          <button mat-menu-item [matMenuTriggerFor]="productos" >Productos</button>
         </mat-menu>
+
+        <mat-menu #clientes="matMenu">
+            <button mat-menu-item [routerLinkActive]="'active'" [routerLink]="['/clientes']">Cliente</button>
+            <button mat-menu-item [routerLinkActive]="'active'" [routerLink]="['/bitacora']">Bitacora de Comunicación</button>
+            <button mat-menu-item >Paises</button>
+            <button mat-menu-item >Areas</button>
+            <button mat-menu-item >Tipo Cliente</button>
+            <button mat-menu-item >Clasificación</button>
+        </mat-menu>
+        <mat-menu #productos="matMenu">
+          <button mat-menu-item >Producto</button>
+          <button mat-menu-item [routerLinkActive]="'active'" [routerLink]="['/categorias/grupos']">Grupos</button>
+          <button mat-menu-item [routerLinkActive]="'active'" [routerLink]="['/categorias/subgrupos']">Subgrupos</button>
+          <button mat-menu-item >Colección</button>
+          <button mat-menu-item >Tipo producto</button>
+      </mat-menu>
 
         <span class="nav-spacer"></span>
 

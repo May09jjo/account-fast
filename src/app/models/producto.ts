@@ -1,10 +1,9 @@
-export interface CategoriaInterface {
+export interface ProductoInterface {
   id?: string;
   codigo?: string;
   descripcion?: string;
-  padreId?: string;
   creadorId?: string;
+  subgrupoId?: string;
   fechaCreate?: any;
   fechaUpdate?: any;
-}
-
+  }

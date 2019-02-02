@@ -23,12 +23,13 @@ const routes: Routes = [
             {
               path: 'bitacora',
               loadChildren: './bitacora/bitacora.module#BitacoraModule'
-            }
-            /* ,
-            {
-                path: 'charts',
-                loadChildren: './charts/charts.module#ChartsModule'
             },
+            {
+                path: 'categorias/:mode',
+                loadChildren: './categorias/categorias.module#CategoriasModule'
+            }
+            /*
+            ,
             {
                 path: 'components',
                 loadChildren:
