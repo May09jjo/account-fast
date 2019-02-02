@@ -53,12 +53,17 @@ export class BitacoraComponent implements OnInit {
   userControl = new FormControl('', [Validators.required]);
   usertest: any;
 
+  /* crear bitacora */
+  crearBit = false;
+  IDUSER: string;
   constructor(private clientesService: ClientesService,
         private dialog: MatDialog, public aut: AuthFireService, public userService: PerfilService,
         public bitacoraService: BitacoraService) {
           this.filtrarclientforUser();
           this.userControl.valueChanges.subscribe( user => {
             console.log('POR VALUE CHANGES' + user.id);
+            this.IDUSER = user.id;
+            this.crearBit = false;
             this.resetBitacora();
             this.clientesService.getClientesforUser(user.id).subscribe(
               client => {
@@ -100,8 +105,8 @@ export class BitacoraComponent implements OnInit {
             console.log('No tiene dueños');
             this.userName = 'No tiene dueño';
           } */
-
-          console.log('select cliente' + item.fullName);
+          this.modeAgregarBit(item.idUser , this.IDUSER);
+          console.log('select cliente' + item.idUser);
         }
 
   resetBitacora() {
@@ -174,5 +179,12 @@ export class BitacoraComponent implements OnInit {
     });
    }
 
+   modeAgregarBit (clientidUser , idUser): void {
+      if (clientidUser === idUser) {
+          this.crearBit = true;
+      } else {
+        this.crearBit = false;
+      }
+   }
 
 }

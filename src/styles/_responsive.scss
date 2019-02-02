@@ -4,7 +4,7 @@
         padding: 20px;
         top: 0px;
         transition-duration: .4s;
-        .content-tables {
+        .content-table {
 
           border-radius: 10px;
 
@@ -40,6 +40,11 @@
 
         .search-form-field.mat-form-field {
           width: 50%;
+        }
+    }
+    div.login-page {
+        .col-mobi {
+          width: 65%;
         }
     }
 }

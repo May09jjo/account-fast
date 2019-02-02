@@ -33,13 +33,13 @@
           </div>
           <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
               <div fxFlexFill fxLayoutAlign="center start">
-                  <button mat-raised-button color="primary" class="w-50" (click)="onLoginEmailPass()" [disabled]="emailv.invalid" >Login</button>
+                  <button mat-raised-button color="primary" class="w-50 col-mobi" (click)="onLoginEmailPass()" [disabled]="emailv.invalid" >Login</button>
               </div>
           </div>
 
           <div fxFlex  fxLayout="row" fxLayout.lt-md="column" style="margin: 20px 0px">
             <div fxFlexFill fxLayoutAlign="center start" >
-              <button mat-raised-button color="warn" class="w-50 align-content-center"  (click)="onLoginGoogle()"><img src="../assets/images/icons-svg/search.svg" class="img-google">Sign in with Google</button>
+              <button mat-raised-button color="warn" class="w-50 col-mobi align-content-center"  (click)="onLoginGoogle()"><img src="../assets/images/icons-svg/search.svg" class="img-google">Sign in with Google</button>
 
             </div>
           </div>
@@ -49,8 +49,5 @@
         </div>
 
       </form>
-
-
-
   </div>
 </div>

@@ -1,5 +1,5 @@
 
- <div class="mat-elevation-z8 content-table client">
+ <div class="mat-elevation-z8 content-tables client">
 
   <mat-toolbar color="primary">
     <mat-toolbar-row>
@@ -8,9 +8,7 @@
 </mat-toolbar>
 
   <div class="search-div " fxLayout="row" fxLayout.xs="column">
-    <button mat-mini-fab color="accent" (click)="onCreate()">
-      <mat-icon>add</mat-icon>
-    </button>
+
     <mat-form-field class="search-form-field" floatLabel="never">
       <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
       <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
@@ -48,7 +46,11 @@
       <input matInput placeholder="cliente (nombre)" disabled [value]="cliName">
     </mat-form-field>
 
-
+    <div *ngIf="crearBit">
+      <button mat-mini-fab color="accent" (click)="onCreate()">
+          <mat-icon>add</mat-icon>
+        </button>
+    </div>
     <!-- end filtro -->
 
   </div>
