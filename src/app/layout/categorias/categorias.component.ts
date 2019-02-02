@@ -3,7 +3,7 @@ import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogConfig }
 import { CategoriaInterface } from '../../models/categorias';
 import { CategoriasService } from '../../services/categorias.service';
 import { AuthFireService } from '../../auth-fire.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-categorias',
@@ -23,10 +23,22 @@ export class CategoriasComponent implements OnInit {
 
   constructor(private clientesService: CategoriasService,
         private dialog: MatDialog, public authFire: AuthFireService,
-        activateRoute: ActivatedRoute) {
+        activateRoute: ActivatedRoute, public router: Router) {
           this.modeCategoria = activateRoute.snapshot.params['mode'];
           console.log(this.modeCategoria);
-         }
+           // override the route reuse strategy
+         this.router.routeReuseStrategy.shouldReuseRoute = function() {
+          return false; };
+
+          this.router.events.subscribe((evt) => {
+            if (evt instanceof NavigationEnd) {
+               // trick the Router into believing it's last link wasn't previously loaded
+               this.router.navigated = false;
+               // if you need to scroll back to top, here is the right place
+               window.scrollTo(0, 0);
+            }
+        });
+    }
 
   ngOnInit() {
         this.clientesService.getCategoriasPadres().subscribe(categoria => {
