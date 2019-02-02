@@ -8,6 +8,20 @@
 </mat-toolbar>
 
   <div class="search-div ">
+    <div *ngIf="modeCategoria === 'subgrupos'">
+        <mat-form-field appearance="outline" >
+            <mat-label>Grupos</mat-label>
+          <mat-select placeholder="Elegir Usuario" [formControl]="userControl" required>
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let grupo of grupoList" [value]="grupo" >
+              {{grupo.descripcion}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="userControl.hasError('required')">Please choose an user</mat-error>
+          <mat-hint>{{userControl.value?.codigo}}</mat-hint>
+          <!-- la opcion de arriba la puedo ocupara mostar el rol(read & write) -->
+        </mat-form-field>
+    </div>
     <button mat-mini-fab color="accent" (click)="onCreate()">
       <mat-icon>add</mat-icon>
     </button>

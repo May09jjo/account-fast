@@ -4,6 +4,7 @@ import { CategoriaInterface } from '../../models/categorias';
 import { CategoriasService } from '../../services/categorias.service';
 import { AuthFireService } from '../../auth-fire.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-categorias',
@@ -15,38 +16,75 @@ export class CategoriasComponent implements OnInit {
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['codigo', 'descripcion', 'fechaUpdate', 'padreId', 'actions'];
   categoriaInt: CategoriaInterface[];
-
+  grupoList: CategoriaInterface [];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
   public modeCategoria = '';
+
+  /* Listar Categorias input*/
+  userControl = new FormControl('', [Validators.required]);
+  grupo: any;
 
   constructor(private clientesService: CategoriasService,
         private dialog: MatDialog, public authFire: AuthFireService,
         activateRoute: ActivatedRoute, public router: Router) {
           this.modeCategoria = activateRoute.snapshot.params['mode'];
           console.log(this.modeCategoria);
-           // override the route reuse strategy
-         this.router.routeReuseStrategy.shouldReuseRoute = function() {
-          return false; };
 
+          this.router.routeReuseStrategy.shouldReuseRoute = function() {
+          return false; };
           this.router.events.subscribe((evt) => {
             if (evt instanceof NavigationEnd) {
-               // trick the Router into believing it's last link wasn't previously loaded
                this.router.navigated = false;
-               // if you need to scroll back to top, here is the right place
                window.scrollTo(0, 0);
+              }
+
+          });
+
+  }
+
+    ngOnInit() {
+      if (this.modeCategoria === 'grupos') {
+        this.getCategorias();
+      } else {
+        this.getCategoriasParaHijos();
+        this.userControl.valueChanges.subscribe( padres => {
+          this.clientesService.getCategoriasHijas(padres.id).subscribe(hijos => {
+              this.categoriaInt = hijos;
+              this.listData = new MatTableDataSource(this.categoriaInt);
+              this.listData.sort = this.sort;
+              this.listData.paginator = this.paginator;
             }
+          );
         });
+
+      }/* end else */
     }
 
-  ngOnInit() {
+    getCategorias() {
         this.clientesService.getCategoriasPadres().subscribe(categoria => {
         this.categoriaInt = categoria;
-        console.log(categoria);
+        console.log('LISTA :' + categoria);
         this.listData = new MatTableDataSource(this.categoriaInt);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+      });
+    }
+
+    getCategoriasHijas() {
+      this.clientesService.getCategoriasHijas(this.modeCategoria).subscribe(categoria => {
+        this.categoriaInt = categoria;
+        console.log('LISTA :' + categoria);
+        this.listData = new MatTableDataSource(this.categoriaInt);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+      });
+    }
+
+    getCategoriasParaHijos() {
+      this.clientesService.getCategoriasPadres().subscribe(categoria => {
+        this.grupoList = categoria;
       });
     }
 
