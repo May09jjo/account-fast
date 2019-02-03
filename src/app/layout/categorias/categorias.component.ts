@@ -1,30 +1,35 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild , OnDestroy} from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
 import { CategoriaInterface } from '../../models/categorias';
 import { CategoriasService } from '../../services/categorias.service';
 import { AuthFireService } from '../../auth-fire.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
   styleUrls: ['./categorias.component.scss']
 })
-export class CategoriasComponent implements OnInit {
+export class CategoriasComponent implements OnInit , OnDestroy {
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['codigo', 'descripcion', 'fechaUpdate', 'padreId', 'actions'];
+  displayedColumns: string[] = ['codigo', 'descripcion', 'fechaUpdate', 'actions'];
   categoriaInt: CategoriaInterface[];
   grupoList: CategoriaInterface [];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey: string;
   public modeCategoria = '';
-
+  public onCategoria = true;
   /* Listar Categorias input*/
   userControl = new FormControl('', [Validators.required]);
   grupo: any;
+
+
+  destroySubject$: Subject<void> = new Subject();
 
   constructor(private clientesService: CategoriasService,
         private dialog: MatDialog, public authFire: AuthFireService,
@@ -41,7 +46,6 @@ export class CategoriasComponent implements OnInit {
               }
 
           });
-
   }
 
     ngOnInit() {
@@ -50,7 +54,7 @@ export class CategoriasComponent implements OnInit {
       } else {
         this.getCategoriasParaHijos();
         this.userControl.valueChanges.subscribe( padres => {
-          this.clientesService.getCategoriasHijas(padres.id).subscribe(hijos => {
+          this.clientesService.getCategoriasHijas(padres.id).pipe(takeUntil(this.destroySubject$)).subscribe(hijos => {
               this.categoriaInt = hijos;
               this.listData = new MatTableDataSource(this.categoriaInt);
               this.listData.sort = this.sort;
@@ -62,8 +66,12 @@ export class CategoriasComponent implements OnInit {
       }/* end else */
     }
 
+    ngOnDestroy() {
+      this.destroySubject$.next();
+    }
+
     getCategorias() {
-        this.clientesService.getCategoriasPadres().subscribe(categoria => {
+        this.clientesService.getCategoriasPadres().pipe(takeUntil(this.destroySubject$)).subscribe(categoria => {
         this.categoriaInt = categoria;
         console.log('LISTA :' + categoria);
         this.listData = new MatTableDataSource(this.categoriaInt);
@@ -73,7 +81,7 @@ export class CategoriasComponent implements OnInit {
     }
 
     getCategoriasHijas() {
-      this.clientesService.getCategoriasHijas(this.modeCategoria).subscribe(categoria => {
+      this.clientesService.getCategoriasHijas(this.modeCategoria).pipe(takeUntil(this.destroySubject$)).subscribe(categoria => {
         this.categoriaInt = categoria;
         console.log('LISTA :' + categoria);
         this.listData = new MatTableDataSource(this.categoriaInt);
@@ -83,8 +91,10 @@ export class CategoriasComponent implements OnInit {
     }
 
     getCategoriasParaHijos() {
-      this.clientesService.getCategoriasPadres().subscribe(categoria => {
+     this.clientesService.getCategoriasPadres().pipe(takeUntil(this.destroySubject$)).subscribe(categoria => {
         this.grupoList = categoria;
+        console.log('entramos a subs');
+
       });
     }
 
