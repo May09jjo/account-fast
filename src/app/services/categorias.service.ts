@@ -13,8 +13,10 @@ export class CategoriasService {
 
   categoriaCollection: AngularFirestoreCollection<CategoriaInterface>;
   categoriaObser: Observable<CategoriaInterface[]>;
+  categoriaHijos: Observable<CategoriaInterface[]>;
+  categoriaPadresMod: Observable<CategoriaInterface[]>;
   categoriaDoc: AngularFirestoreDocument<CategoriaInterface>;
-  registerFormcli: FormGroup;
+  registerFormcatg: FormGroup;
   constructor(public afs: AngularFirestore,
         private formBuilder: FormBuilder,
         public authFire: AuthFireService) {
@@ -27,16 +29,17 @@ export class CategoriasService {
         const id = a.payload.doc.id;
         return { id, ...data };
       }))
+
     );
 
-      this.registerFormcli = this.formBuilder.group({
+      this.registerFormcatg = this.formBuilder.group({
         id:  [null],
         codigo: ['', [Validators.required, Validators.minLength(3)]],
         descripcion: ['', [Validators.required, Validators.maxLength(100)]],
         padreId: [null],
         creadorId: [null],
-        fechaCreate: [''],
-        fechaUpdate: [''],
+        fechaCreate: [new Date()],
+        fechaUpdate: [new Date()],
       });
    }
 
@@ -44,10 +47,20 @@ export class CategoriasService {
     return this.categoriaObser;
   }
 
+  getCategoriasPadresModal() {
+    this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', '0'));
+    return this.categoriaPadresMod = this.categoriaCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as CategoriaInterface;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+  }
 
   getCategoriasHijas(idPadre) {
     this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', idPadre));
-     return this.categoriaObser = this.categoriaCollection.snapshotChanges().pipe(
+     return this.categoriaHijos = this.categoriaCollection.snapshotChanges().pipe(
         map(actions => actions.map(a => {
           const data = a.payload.doc.data() as CategoriaInterface;
           const id = a.payload.doc.id;
@@ -56,10 +69,10 @@ export class CategoriasService {
       );
   }
 
-   get f() {return this.registerFormcli.controls; }
+   get f() {return this.registerFormcatg.controls; }
 
    initializeFormGroup() {
-     this.registerFormcli.setValue({
+     this.registerFormcatg.setValue({
        id: null,
        codigo: '',
        descripcion: '',
@@ -71,7 +84,11 @@ export class CategoriasService {
    }
 
    setCategoriaModal(categoria) {
-    this.registerFormcli.setValue(categoria);
+    this.registerFormcatg.setValue(categoria);
+  }
+
+  setPadreidModal(padreId) {
+    this.f.padreId.setValue(padreId);
   }
 
     /* CRUD */
@@ -94,7 +111,6 @@ export class CategoriasService {
       descripcion: upCateg.descripcion,
       padreId: upCateg.padreId,
       creadorId: upCateg.creadorId,
-      fechaCreate: upCateg.fechaCreate,
       fechaUpdate: upCateg.fechaUpdate,
     });
   }
