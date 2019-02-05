@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CategoriaInterface } from '../models/categorias';
-import { AngularFirestoreCollection ,AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestoreCollection , AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthFireService } from '../auth-fire.service';
@@ -15,6 +15,7 @@ export class CategoriasService {
   categoriaObser: Observable<CategoriaInterface[]>;
   categoriaHijos: Observable<CategoriaInterface[]>;
   categoriaPadresMod: Observable<CategoriaInterface[]>;
+  categoriaSubGrupoMod: Observable<CategoriaInterface[]>;
   categoriaDoc: AngularFirestoreDocument<CategoriaInterface>;
   registerFormcatg: FormGroup;
   constructor(public afs: AngularFirestore,
@@ -59,6 +60,17 @@ export class CategoriasService {
   }
 
   getCategoriasHijas(idPadre) {
+    this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', idPadre));
+     return this.categoriaHijos = this.categoriaCollection.snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as CategoriaInterface;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  }
+
+  getCategoriasSubGrupoModal(idPadre) {
     this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', idPadre));
      return this.categoriaHijos = this.categoriaCollection.snapshotChanges().pipe(
         map(actions => actions.map(a => {

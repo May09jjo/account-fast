@@ -27,14 +27,13 @@ const routes: Routes = [
             {
                 path: 'categorias/:mode',
                 loadChildren: './categorias/categorias.module#CategoriasModule',
-            }
-            /*
-            ,
-            {
-                path: 'components',
-                loadChildren:
-                    './material-components/material-components.module#MaterialComponentsModule'
             },
+            {
+                path: 'producto',
+                loadChildren:
+                    './producto/producto.module#ProductoModule'
+            }
+            /*,
             {
                 path: 'forms',
                 loadChildren: './forms/forms.module#FormsModule'

@@ -1,0 +1,35 @@
+.mat-form-field{
+  margin-right: 10px;
+}
+
+/* .toolbarcli {
+  border-radius: 10px;
+  span{
+    width: 95%;
+  }
+  .mat-icon {
+    width: 5%;
+  }
+} */
+
+.title-modal{
+  border-style: none none dotted none;
+  border-width: 2px;
+  border-color: #555555;
+  padding: 5px 0px;
+
+  span {
+    margin-right: 68%;
+  }
+
+}
+
+@media screen and (max-width: 992px) {
+
+
+  span {
+    margin-right: 20% !important;
+  }
+
+
+}

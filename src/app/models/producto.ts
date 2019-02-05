@@ -3,7 +3,7 @@ export interface ProductoInterface {
   codigo?: string;
   descripcion?: string;
   creadorId?: string;
-  subgrupoId?: string;
+  pertenece?: string;
   fechaCreate?: any;
   fechaUpdate?: any;
   }

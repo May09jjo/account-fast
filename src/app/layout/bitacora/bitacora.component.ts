@@ -5,10 +5,10 @@ import { BitacoraInterface } from './../../models/bitacora';
 import { Perfil } from './../../models/perfil';
 import { PerfilService } from './../../perfil.service';
 import { AuthFireService } from 'src/app/auth-fire.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { startWith, map, takeUntil } from 'rxjs/operators';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
 import { ModalCreateComponent } from '../clientes/modal-create/modal-create.component';
 import { BitacoraService } from '../../services/bitacora.service';
@@ -28,7 +28,7 @@ import { trigger, style, state, transition, animate } from '@angular/animations'
     ]),
   ],
 })
-export class BitacoraComponent implements OnInit {
+export class BitacoraComponent implements OnInit, OnDestroy {
 
   public cliName: string;
   public userName: string;
@@ -56,16 +56,18 @@ export class BitacoraComponent implements OnInit {
   /* crear bitacora */
   crearBit = false;
   IDUSER: string;
+
+  destroySubjectBit: Subject<void> = new Subject();
   constructor(private clientesService: ClientesService,
         private dialog: MatDialog, public aut: AuthFireService, public userService: PerfilService,
         public bitacoraService: BitacoraService) {
           this.filtrarclientforUser();
-          this.userControl.valueChanges.subscribe( user => {
+          this.userControl.valueChanges.pipe(takeUntil(this.destroySubjectBit)).subscribe( user => {
             console.log('POR VALUE CHANGES' + user.id);
             this.IDUSER = user.id;
             this.crearBit = false;
             this.resetBitacora();
-            this.clientesService.getClientesforUser(user.id).subscribe(
+            this.clientesService.getClientesforUser(user.id).pipe(takeUntil(this.destroySubjectBit)).subscribe(
               client => {
                 this.clientsInt = client;
                 this.filteredStates = this.stateCtrl.valueChanges
@@ -81,6 +83,9 @@ export class BitacoraComponent implements OnInit {
   ngOnInit() {
       this.resetBitacora();
     }
+  OnDestroy() {
+    this.destroySubjectBit.next();
+  }
 
     private _filterStates(value: string): ClientesInterface[] {
       const filterValue = value.toLowerCase();
@@ -94,7 +99,7 @@ export class BitacoraComponent implements OnInit {
           /* this.cliName = item.fullName;
           if (item.idUser) {
           console.log('USER :' + item.idUser);
-          this.userService.getNameforId(item.idUser).subscribe(
+          this.userService.getNameforId(item.idUser).pipe(takeUntil(this.destroySubjectBit)).subscribe(
             users => {
               this.userName = users.firstName;
               console.log(this.userName);
@@ -118,7 +123,7 @@ export class BitacoraComponent implements OnInit {
   }
 
   getBitacoraforCliente (clienteid): void {
-        this.bitacoraService.getBitacoraforCliente(clienteid).subscribe(bitacora => {
+        this.bitacoraService.getBitacoraforCliente(clienteid).pipe(takeUntil(this.destroySubjectBit)).subscribe(bitacora => {
         this.bitacoraInt = bitacora;
         bitacora.map(vit => {
           const da = new Date (vit.fecha.seconds * 1000);
@@ -172,7 +177,7 @@ export class BitacoraComponent implements OnInit {
    }
 
    filtrarclientforUser() {
-    this.userService.getUser().subscribe(users => {
+    this.userService.getUser().pipe(takeUntil(this.destroySubjectBit)).subscribe(users => {
       this.userIntList = users;
       console.log('LIST DE USUARIOS' + this.userIntList);
 

@@ -1,0 +1,51 @@
+
+<div matDialogTitle  class="title-modal">
+  <span >{{serviceForm.prod['id'].value?"Editar Producto":"Nuevo Producto"}}</span>
+<button mat-button mat-dialog-close ><mat-icon color="warn" >clear</mat-icon></button>
+</div>
+
+
+<form [formGroup]= "serviceForm.registerFormProd"  (ngSubmit)="onSubmit()" >
+      <mat-dialog-content >
+      <input type="hidden" formControlName="id">
+      <input type="hidden" formControlName="creadorId">
+      <input type="hidden" formControlName="pertenece">
+
+
+    <mat-form-field appearance="outline" >
+        <mat-label>Subrupos</mat-label>
+      <mat-select placeholder="Elegir Subgrupo" [formControl]="userControl" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let subgrupoitem of subgrupoListAgregar" [value]="subgrupoitem" >
+          {{subgrupoitem.descripcion}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="userControl.hasError('required')">Please choose an group</mat-error>
+      <mat-hint>{{userControl.value?.codigo}}</mat-hint>
+      <!-- la opcion de arriba la puedo ocupara mostar el rol(read & write) -->
+    </mat-form-field>
+
+    <mat-form-field>
+        <input formControlName="codigo" matInput placeholder="codigo*">
+        <mat-error *ngIf="submitted && serviceForm.prod.codigo.errors">
+                <mat-error *ngIf= "serviceForm.prod.codigo.errors.required">codec is required</mat-error>
+                <mat-error *ngIf= "serviceForm.prod.codigo.errors.minlength">Minimum 3 charactors needed.</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="descripcion" matInput placeholder="Descripcion*">
+        <mat-error *ngIf="submitted && serviceForm.prod.descripcion.errors">
+                <mat-error *ngIf= "serviceForm.prod.descripcion.errors.required">Descripcion is required</mat-error>
+        </mat-error>
+      </mat-form-field>
+  </mat-dialog-content>
+
+    <mat-dialog-actions fxLayoutAlign="center end" >
+      <div class="button-row" fxLayoutGap="5px">
+        <button mat-raised-button color="primary" type="submit"  cdkFocusInitial >Submit</button>
+        <button mat-raised-button color="warn" (click)= "onClose()">Clear</button>
+      </div>
+    </mat-dialog-actions>
+
+</form>
+
