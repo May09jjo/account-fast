@@ -49,6 +49,7 @@ export class ClientesService {
     return this.clientesObser;
   }
 
+  /* obtener clientes para bitacora */
   getClientesforUser(iduser) {
     this.clientesCollection = this.afs.collection<ClientesInterface>('clientes', res => res.where('idUser', '==', iduser));
      return this.clientesObser = this.clientesCollection.snapshotChanges().pipe(

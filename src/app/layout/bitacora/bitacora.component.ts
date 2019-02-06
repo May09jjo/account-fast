@@ -83,7 +83,7 @@ export class BitacoraComponent implements OnInit, OnDestroy {
   ngOnInit() {
       this.resetBitacora();
     }
-  OnDestroy() {
+  ngOnDestroy() {
     this.destroySubjectBit.next();
   }
 
