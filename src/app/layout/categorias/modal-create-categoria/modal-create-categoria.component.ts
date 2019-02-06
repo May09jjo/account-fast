@@ -1,7 +1,7 @@
 import { CategoriasService } from 'src/app/services/categorias.service';
 import { AuthFireService } from './../../../auth-fire.service';
 import { CategoriaInterface } from 'src/app/models/categorias';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef , MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
@@ -17,7 +17,7 @@ export interface DialogDataMode {
   styleUrls: ['./modal-create-categoria.component.scss']
 })
 
-export class ModalCreateCategoriaComponent implements OnInit {
+export class ModalCreateCategoriaComponent implements OnInit , OnDestroy {
 
   submitted = false;
   grupoListAgregar: CategoriaInterface [];
@@ -40,7 +40,7 @@ export class ModalCreateCategoriaComponent implements OnInit {
               private categoriaService: CategoriasService) {
 
          if (this.data.mode === 'subgrupos') {
-          this.categoriaService.getCategoriasPadresModal().pipe(takeUntil(this.destroySubjectModal)).subscribe(categoria => {
+          this.categoriaService.getGruposForModal().pipe(takeUntil(this.destroySubjectModal)).subscribe(categoria => {
             this.grupoListAgregar = categoria;
             this.grupoListAgregar.map( item => {
               if (this.serviceForm.f.padreId.value === item.id) {
@@ -59,6 +59,7 @@ export class ModalCreateCategoriaComponent implements OnInit {
         }
 
   ngOnInit() {}
+  ngOnDestroy() { this.destroySubjectModal.next(); }
 
 
 onSubmit() {

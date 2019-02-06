@@ -21,25 +21,6 @@
           <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/producto']">
               <mat-icon class="sidenav-icon">code</mat-icon> {{ 'Productos' | translate }}
           </a>
-          <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/blank-page']">
-              <mat-icon class="sidenav-icon">insert_drive_file</mat-icon> {{ 'Blank Page' | translate }}
-          </a>
-          <div class="nested-menu">
-              <a mat-list-item (click)="addExpandClass('pages')">
-                  <mat-icon class="sidenav-icon">add</mat-icon> {{ 'Menu' | translate }}
-              </a>
-              <ul class="nested submenu" [class.expand]="showMenu === 'pages'">
-                  <li>
-                      <a href="javascript:void(0)"><span>{{ 'Submenu' | translate }}</span></a>
-                  </li>
-                  <li>
-                      <a href="javascript:void(0)"><span>{{ 'Submenu' | translate }}</span></a>
-                  </li>
-                  <li>
-                      <a href="javascript:void(0)"><span>{{ 'Submenu' | translate }}</span></a>
-                  </li>
-              </ul>
-          </div>
       </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

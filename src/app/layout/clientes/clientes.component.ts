@@ -43,7 +43,7 @@ export class ClientesComponent implements OnInit, OnDestroy{
     }
 
   ngOnDestroy() {
-
+    this.destroySubjectCli.next();
   }
 
   onSearchClear() {

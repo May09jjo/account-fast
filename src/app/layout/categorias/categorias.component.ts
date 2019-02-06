@@ -58,7 +58,7 @@ export class CategoriasComponent implements OnInit , OnDestroy {
         this.userControl.valueChanges.subscribe( padres => {
           /* le paso el id del padre select en subgrupo y luego lo paso por set al modal */
           this.padreIdModal = padres.id;
-          this.categoriaService.getCategoriasHijas(padres.id).pipe(takeUntil(this.destroySubject$)).subscribe(hijos => {
+          this.categoriaService.getSubgruposForIdPadre(padres.id).pipe(takeUntil(this.destroySubject$)).subscribe(hijos => {
               this.categoriasHijas = hijos;
               console.log('HIJOS :' + hijos);
               this.listData = new MatTableDataSource(this.categoriasHijas);
@@ -90,7 +90,7 @@ export class CategoriasComponent implements OnInit , OnDestroy {
     }
 
     getCategoriasParaHijos() {
-     this.categoriaService.getCategoriasPadres().pipe(takeUntil(this.destroySubject$)).subscribe(categoria => {
+     this.categoriaService.getGruposForSelect().pipe(takeUntil(this.destroySubject$)).subscribe(categoria => {
         this.grupoList = categoria;
         console.log('select father');
 

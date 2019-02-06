@@ -19,16 +19,8 @@ export class ProductoService {
   constructor(public afs: AngularFirestore,
     private formBuilder: FormBuilder,
     public authFire: AuthFireService) {
-      this.productoCollection = afs.collection<ProductoInterface>('producto');
 
-      this.productoObser = this.productoCollection.snapshotChanges().pipe(
-        map(actions => actions.map(a => {
-          const data = a.payload.doc.data() as ProductoInterface;
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        }))
-      );
-    this.registerFormProd = this.formBuilder.group({
+     this.registerFormProd = this.formBuilder.group({
       id:  [null],
       codigo: ['', [Validators.required, Validators.minLength(3)]],
       descripcion: ['', [Validators.required, Validators.maxLength(100)]],
@@ -38,10 +30,6 @@ export class ProductoService {
       fechaUpdate: [new Date()],
     });
 
-    }
-
-    getProducto() {
-      return this.productoObser;
     }
 
     getProductoforSubgrupo (pertenece) {

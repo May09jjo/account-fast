@@ -2,7 +2,7 @@ import { CategoriasService } from './../../../services/categorias.service';
 import { AuthFireService } from './../../../auth-fire.service';
 import { ProductoInterface } from './../../../models/producto';
 import { CategoriaInterface } from './../../../models/categorias';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -18,7 +18,7 @@ export interface DialogDataModePadre {
   templateUrl: './modal-producto.component.html',
   styleUrls: ['./modal-producto.component.scss']
 })
-export class ModalProductoComponent implements OnInit {
+export class ModalProductoComponent implements OnInit, OnDestroy {
 
   submitted = false;
   subgrupoListAgregar: CategoriaInterface [];
@@ -42,7 +42,7 @@ export class ModalProductoComponent implements OnInit {
               private categoriaService: CategoriasService,
               @Inject(MAT_DIALOG_DATA) public data: DialogDataModePadre) {
 
-          this.categoriaService.getCategoriasSubGrupoModal(this.data.mode).
+          this.categoriaService.getSubGrupoProdModal(this.data.mode).
           pipe(takeUntil(this.destroySubjectModal)).subscribe(categoria => {
             this.subgrupoListAgregar = categoria;
             this.subgrupoListAgregar.map( item => {
@@ -59,7 +59,9 @@ export class ModalProductoComponent implements OnInit {
 }
 
 ngOnInit() {}
-
+ngOnDestroy() {
+  this.destroySubjectModal.next();
+}
 
 onSubmit() {
   this.submitted = true;

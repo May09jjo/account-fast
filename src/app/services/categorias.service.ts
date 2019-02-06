@@ -12,11 +12,27 @@ import { map } from 'rxjs/operators';
 export class CategoriasService {
 
   categoriaCollection: AngularFirestoreCollection<CategoriaInterface>;
+  /* list grupos page */
   categoriaObser: Observable<CategoriaInterface[]>;
+
+  /* list subgrupo page */
   categoriaHijos: Observable<CategoriaInterface[]>;
+
+  /* list grupos para select en subgrupo */
+  gruposForSelect: Observable<CategoriaInterface[]>;
+
+  /* list grupo page modal subgrupo */
   categoriaPadresMod: Observable<CategoriaInterface[]>;
-  categoriaSubGrupoMod: Observable<CategoriaInterface[]>;
-  categoriaDoc: AngularFirestoreDocument<CategoriaInterface>;
+
+  /* list grupos en producto page */
+  categoriaPadresProd: Observable<CategoriaInterface[]>;
+
+  /* list subgrupo en producto page */
+  categoriaSubgrupoProd: Observable<CategoriaInterface[]>;
+
+  /* list subgrupo en producto modal */
+  categoriaSubGrupoModalProd: Observable<CategoriaInterface[]>;
+
   registerFormcatg: FormGroup;
   constructor(public afs: AngularFirestore,
         private formBuilder: FormBuilder,
@@ -44,11 +60,29 @@ export class CategoriasService {
       });
    }
 
-   getCategoriasPadres() {
-    return this.categoriaObser;
-  }
+   getCategoriasPadres() { return this.categoriaObser; }
+   getSubgruposForIdPadre (idPadre) {
+    this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', idPadre));
+    return this.categoriaHijos = this.categoriaCollection.snapshotChanges().pipe(
+       map(actions => actions.map(a => {
+         const data = a.payload.doc.data() as CategoriaInterface;
+         const id = a.payload.doc.id;
+         return { id, ...data };
+       }))
+     );
+   }
+   getGruposForSelect() {
+    this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', '0'));
+    return this.gruposForSelect = this.categoriaCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as CategoriaInterface;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+   }
 
-  getCategoriasPadresModal() {
+   getGruposForModal() {
     this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', '0'));
     return this.categoriaPadresMod = this.categoriaCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -57,9 +91,21 @@ export class CategoriasService {
         return { id, ...data };
       }))
     );
-  }
+   }
 
-  getCategoriasHijas(idPadre) {
+   getGrupoForProd() {
+    this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', '0'));
+    return this.categoriaPadresProd = this.categoriaCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as CategoriaInterface;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+   }
+
+  /* obtener los subgrupos por id de grupos */
+  getSubgruposForProd(idPadre) {
     this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', idPadre));
      return this.categoriaHijos = this.categoriaCollection.snapshotChanges().pipe(
         map(actions => actions.map(a => {
@@ -72,7 +118,7 @@ export class CategoriasService {
 
   getCategoriasSubGrupoModal(idPadre) {
     this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', idPadre));
-     return this.categoriaHijos = this.categoriaCollection.snapshotChanges().pipe(
+     return this.categoriaSubgrupoProd = this.categoriaCollection.snapshotChanges().pipe(
         map(actions => actions.map(a => {
           const data = a.payload.doc.data() as CategoriaInterface;
           const id = a.payload.doc.id;
@@ -80,6 +126,18 @@ export class CategoriasService {
         }))
       );
   }
+
+  getSubGrupoProdModal(idPadre) {
+    this.categoriaCollection = this.afs.collection<CategoriaInterface>('categoria', res => res.where('padreId', '==', idPadre));
+     return this.categoriaSubGrupoModalProd = this.categoriaCollection.snapshotChanges().pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data() as CategoriaInterface;
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      );
+  }
+
 
    get f() {return this.registerFormcatg.controls; }
 

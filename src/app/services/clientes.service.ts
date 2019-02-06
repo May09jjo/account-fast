@@ -16,7 +16,7 @@ export class ClientesService {
 
   clientesCollection: AngularFirestoreCollection<ClientesInterface>;
   clientesObser: Observable<ClientesInterface[]>;
-  clientesDoc: AngularFirestoreDocument<ClientesInterface>;
+  clienteListBit: Observable<ClientesInterface[]>;
   registerFormcli: FormGroup;
   constructor(public afs: AngularFirestore,
         private formBuilder: FormBuilder,
@@ -52,7 +52,7 @@ export class ClientesService {
   /* obtener clientes para bitacora */
   getClientesforUser(iduser) {
     this.clientesCollection = this.afs.collection<ClientesInterface>('clientes', res => res.where('idUser', '==', iduser));
-     return this.clientesObser = this.clientesCollection.snapshotChanges().pipe(
+     return this.clienteListBit = this.clientesCollection.snapshotChanges().pipe(
         map(actions => actions.map(a => {
           const data = a.payload.doc.data() as ClientesInterface;
           const id = a.payload.doc.id;

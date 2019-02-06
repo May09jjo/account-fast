@@ -3,13 +3,14 @@ import { AuthFireService } from './../../auth-fire.service';
 import { CategoriasService } from './../../services/categorias.service';
 import { ProductoInterface } from './../../models/producto';
 import { CategoriaInterface } from './../../models/categorias';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ProductoService } from '../../services/producto.service';
 import { ModalProductoComponent } from './modal-producto/modal-producto.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-producto',
@@ -23,7 +24,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     ]),
   ],
 })
-export class ProductoComponent implements OnInit {
+export class ProductoComponent implements OnInit, OnDestroy{
 
   listData: MatTableDataSource<any>;
   displayedColumns: string[] = ['codigo', 'descripcion', 'fechaUpdate', 'actions'];
@@ -50,20 +51,21 @@ export class ProductoComponent implements OnInit {
   /* crear bitacora */
   crearProd = false;
 
+  destroySubjectProd: Subject<void> = new Subject();
   constructor(private categoriaService: CategoriasService,
         private dialog: MatDialog, public aut: AuthFireService,
         public productoService: ProductoService) {
 
           this.getGroupsforSelect();
-          this.grupoControl.valueChanges.subscribe( grupo => {
+          this.grupoControl.valueChanges.pipe(takeUntil(this.destroySubjectProd)).subscribe( grupo => {
             console.log('POR VALUE CHANGES' + grupo.id);
             this.Idgrupo = grupo.id;
             this.crearProd = true;
             this.resetProducto();
-            this.categoriaService.getCategoriasHijas(grupo.id).subscribe(
+            this.categoriaService.getSubgruposForProd(grupo.id).pipe(takeUntil(this.destroySubjectProd)).subscribe(
               subgrupo => {
                 this.subgrupoIntList = subgrupo;
-                this.subgrupoControl.valueChanges.subscribe( subgrupochange => {
+                this.subgrupoControl.valueChanges.pipe(takeUntil(this.destroySubjectProd)).subscribe( subgrupochange => {
                   console.log('POR VALUE CHANGES' + subgrupochange.id);
                   this.IdSubgrupo = subgrupochange.id;
                   this.getProductoofselect(this.IdSubgrupo);
@@ -77,6 +79,10 @@ export class ProductoComponent implements OnInit {
       this.resetProducto();
     }
 
+  ngOnDestroy() {
+      this.destroySubjectProd.next();
+  }
+
   resetProducto() {
       this.productoInt = [];
       this.listData = new MatTableDataSource(this.productoInt);
@@ -86,7 +92,7 @@ export class ProductoComponent implements OnInit {
   }
 
   getProductoofselect (subgrupoid): void {
-        this.productoService.getProductoforSubgrupo(subgrupoid).subscribe(producto => {
+        this.productoService.getProductoforSubgrupo(subgrupoid).pipe(takeUntil(this.destroySubjectProd)).subscribe(producto => {
         this.productoInt = producto;
         /* producto.map(vit => {
           const da = new Date (vit.fecha.seconds * 1000);
@@ -141,7 +147,7 @@ export class ProductoComponent implements OnInit {
    }
 
    getGroupsforSelect() {
-    this.categoriaService.getCategoriasPadres().subscribe(grupos => {
+    this.categoriaService.getGrupoForProd().pipe(takeUntil(this.destroySubjectProd)).subscribe(grupos => {
       this.grupoIntList = grupos;
       console.log('LIST DE GRUPOS' + this.grupoIntList);
     });
