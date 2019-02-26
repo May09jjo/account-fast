@@ -2,7 +2,7 @@ html,
 body {
     height: 100%;
     margin: 0;
-    font-family: 'Fontil Sans';
+    font-family: 'GoogleSans';
 }
 
 .main-container {
@@ -17,7 +17,15 @@ body {
     }
 }
 
-.mb-20 {
-    margin-bottom: 20px;
-}
+.mb-20 { margin-bottom: 20px;}
 .capitalize {text-transform: capitalize; }
+
+mat-sidenav-content.mat-drawer-content.mat-sidenav-content {
+    background: #eeeeee;
+        mat-card , mat-paginator {
+      border-radius: 8px !important;
+    }
+    mat-card span.spacer {
+      flex: 1 1 auto;
+    }
+}

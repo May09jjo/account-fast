@@ -73,10 +73,6 @@ export class CategoriasComponent implements OnInit , OnDestroy {
 
     ngOnDestroy() {
       this.destroySubject$.next();
-/*       this.listData = null;
-      this.categoriaPadres = null;
-      this.categoriasHijas = null;
-      this.grupoList = null; */
     }
 
     getCategorias() {
