@@ -82,26 +82,19 @@
 
   <mat-card >
     <mat-card-header>
-        <mat-card-title>
-          Mantenimiento de Clientes
-
-        </mat-card-title>
-        <mat-card-subtitle>
-          <div class="search-div ">
-            <button mat-mini-fab color="accent" (click)="onCreate()">
-              <mat-icon>add</mat-icon>
-            </button>
-            <mat-form-field class="search-form-field" floatLabel="never">
-              <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
-              <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
-                <mat-icon>close</mat-icon>
-              </button>
-            </mat-form-field>
-          </div>
-        </mat-card-subtitle>
-        <span class="spacer"></span>
-        <mat-icon class="example-icon">verified_user</mat-icon>
+        <mat-card-subtitle>Mantenimiento de Clientes</mat-card-subtitle>
+            <mat-form-field appearance="outline" class="imput-head-search" floatLabel="never">
+                <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
+                <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+          <span class="spacer"></span>
+          <div class="add-head-card">
+            <button mat-raised-button color="primary"(click)="onCreate()" >Agregar cliente</button>
+           </div>
     </mat-card-header>
+    <mat-divider></mat-divider>
       <mat-card-content>
         <mat-table [dataSource]="listData"  matSort>
           <ng-container class="" matColumnDef="codigo">

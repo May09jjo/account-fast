@@ -28,4 +28,19 @@ mat-sidenav-content.mat-drawer-content.mat-sidenav-content {
     mat-card span.spacer {
       flex: 1 1 auto;
     }
+    mat-card {
+      max-width: 1000px;
+      margin: 30px auto;
+
+      mat-card-subtitle {
+        margin: 12px 0 0 0 ;
+      }
+      mat-form-field.imput-head-search {
+        margin: 0px;
+        .mat-form-field-infix {
+          padding: 0.5em 0 !important;
+      }
+    }
+    .add-head-card {  margin-top: 2px; }
+  }
 }
